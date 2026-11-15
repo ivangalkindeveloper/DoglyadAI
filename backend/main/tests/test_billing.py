@@ -274,12 +274,12 @@ def test_report_jobs_count_each_completed_generation_once(
             )
             jobs = ReportGenerationJobs(
                 store,
-                container.report_generation,
+                container.report_generation_service,
                 ctx.service,
             )
             app.state.container = replace(
                 container,
-                subscriptions=ctx.service,
+                subscription_service=ctx.service,
                 report_jobs=jobs,
             )
             app.dependency_overrides[AppCheck.verify] = lambda: None
@@ -336,7 +336,7 @@ def test_report_jobs_count_each_completed_generation_once(
                     ).execute(
                         job,
                         store,
-                        container.report_generation,
+                        container.report_generation_service,
                         container.model_service,
                         ctx.service,
                         10,
@@ -905,7 +905,7 @@ def test_gateway_redirect_and_callback_not_trusted(
             gateway.dependency_overrides[ServiceDependencies.subscriptions] = lambda: ctx.service
             # Bound gateway handlers resolve through the container as well as FastAPI dependencies.
             gateway.state.container = SimpleNamespace(
-                subscriptions=ctx.service,
+                subscription_service=ctx.service,
                 configuration=configuration,
             )
             async with httpx.AsyncClient(
@@ -949,8 +949,8 @@ def test_billing_api_requires_owner_secret(
                 variables,
             )
             app.state.container = SimpleNamespace(
-                subscriptions=ctx.service,
-                checkout_payments=ctx.checkout,
+                subscription_service=ctx.service,
+                checkout_payment_service=ctx.checkout,
                 configuration=configuration,
             )
             app.dependency_overrides[AppCheck.verify] = lambda: None

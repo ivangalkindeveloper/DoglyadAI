@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from functools import partial
+
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.routing import APIRoute
 
@@ -42,7 +44,10 @@ class ApplicationFactory:
         handler = ApiErrorHandler()
         app = FastAPI(
             responses=handler.responses(),
-            lifespan=MainLifespan,
+            lifespan=partial(
+                MainLifespan,
+                is_speech_enabled=True,
+            ),
             docs_url=None,
             redoc_url=None,
             openapi_url=None,
@@ -97,7 +102,10 @@ class ApplicationFactory:
             settings.configuration_directory,
         ).load_server()
         app = FastAPI(
-            lifespan=MainLifespan,
+            lifespan=partial(
+                MainLifespan,
+                is_speech_enabled=False,
+            ),
             docs_url=None,
             redoc_url=None,
             openapi_url=None,

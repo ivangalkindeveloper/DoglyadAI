@@ -13,6 +13,8 @@ cases:
   steps:
   - action: Выбрать каждый доступный транскрибатор и парсер, сохранить и перезапустить
     expect: Выбранные значения отображаются после перезапуска; неподдерживаемый вариант нельзя сохранить.
+  - action: Выбрать T-one и проверить способ разбора
+    expect: Показан серверный разбор; выбор локального парсера недоступен до смены транскрибатора.
   - action: Выбрать доступную модель
     expect: Модель обновлена в настройках и Scan; после перезапуска выбор сохраняется.
   covers:
@@ -25,6 +27,7 @@ cases:
     flows:
     - e2e-settingsai-ai-settings
     - e2e-settingsai-providers
+    - e2e-settingsai-tone
     - e2e-selectneuralmodel-model-1
     - e2e-selectneuralmodel-model-2
     - e2e-selectneuralmodel-model-3

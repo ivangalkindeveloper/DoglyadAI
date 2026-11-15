@@ -14,12 +14,6 @@ import Foundation
 public protocol DSpeechControllerProtocol: ObservableObject
     where ObjectWillChangePublisher == ObservableObjectPublisher
 {
-    init(
-        locale: Locale,
-        contextualStrings: [String],
-        lexiconLocalization: DSpeechLexiconLocalization,
-    )
-
     var recordingStatus: DSpeechRecordingStatus {
         get
     }
@@ -33,6 +27,10 @@ public protocol DSpeechControllerProtocol: ObservableObject
         get
     }
     var modelPreparationStatus: DSpeechModelPreparationStatus {
+        get
+    }
+
+    var isTranscriptionRetryAvailable: Bool {
         get
     }
 
@@ -54,6 +52,10 @@ public protocol DSpeechControllerProtocol: ObservableObject
 }
 
 public extension DSpeechControllerProtocol {
+    var isTranscriptionRetryAvailable: Bool {
+        false
+    }
+
     var modelPreparationStatus: DSpeechModelPreparationStatus {
         .ready
     }

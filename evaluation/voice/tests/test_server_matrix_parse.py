@@ -49,7 +49,7 @@ def test_server_matrix_deduplicates_only_identical_inputs_and_preserves_all_path
     async def handler(request: httpx.Request) -> httpx.Response:
         nonlocal active, maximum_active
         assert request.url.host == "127.0.0.1"
-        assert request.url.path == "/v1/ultrasound/parse_dictation"
+        assert request.url.path == "/v1/ultrasound/parse_transcript"
         assert request.headers["X-Firebase-AppCheck"] == "test-app-check-token"
         assert request.headers["Accept-Language"] == "en"
         body = json.loads(request.content)

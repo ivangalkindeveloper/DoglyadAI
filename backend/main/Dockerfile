@@ -1,13 +1,33 @@
 # syntax=docker/dockerfile:1
+FROM python:3.11-slim AS dependencies
+
+# KenLM builds a native CPU extension. Keep the toolchain out of the runtime.
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential cmake git \
+    && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt /app/requirements.txt
+RUN --mount=type=cache,id=doglyad-main-pip,target=/root/.cache/pip,sharing=locked \
+    pip wheel --wheel-dir /wheels -r /app/requirements.txt
+
+FROM python:3.11-slim AS models
+RUN pip install --no-cache-dir huggingface-hub==0.36.2
+WORKDIR /app
+COPY app/service/speech/t_one_worker.py /app/app/service/speech/t_one_worker.py
+COPY scripts/download_t_one_models.py /app/scripts/download_t_one_models.py
+ENV HF_HUB_DISABLE_XET=1 PYTHONPATH=/app
+RUN --mount=type=cache,id=doglyad-t-one-models,target=/cache \
+    python scripts/download_t_one_models.py /cache/t_one \
+    && mkdir -p /models/t_one \
+    && cp /cache/t_one/model.onnx /cache/t_one/kenlm.bin /models/t_one/
+
 FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
-# Keep completed downloads across rebuilds and interrupted installations.
-# This cache belongs to BuildKit and is not copied into the application image.
-RUN --mount=type=cache,id=doglyad-main-pip,target=/root/.cache/pip,sharing=locked \
-    pip install --disable-pip-version-check -r /app/requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=bind,from=dependencies,source=/wheels,target=/wheels \
+    pip install --no-cache-dir --no-index /wheels/*.whl
+COPY --from=models /models /app/models
 RUN groupadd --gid 10001 doglyad \
     && useradd --uid 10001 --gid doglyad --no-create-home --shell /usr/sbin/nologin doglyad \
     && mkdir -p /app/logs \

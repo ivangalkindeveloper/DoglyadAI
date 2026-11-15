@@ -90,6 +90,15 @@ final class VoiceEndToEndTests: XCTestCase {
         let isFoundationOnly = ProcessInfo.processInfo.environment[
             "VOICE_END_TO_END_REQUIRE_FOUNDATION_MODELS",
         ] == "1"
+        let selectedNeuralModelId = ProcessInfo.processInfo.environment[
+            "VOICE_END_TO_END_MODEL_ID",
+        ]
+        if !isFoundationOnly {
+            _ = try XCTUnwrap(
+                selectedNeuralModelId,
+                "Set VOICE_END_TO_END_MODEL_ID for server parsing",
+            )
+        }
         if let localeFilter {
             cases = cases.filter {
                 $0[
@@ -513,13 +522,13 @@ final class VoiceEndToEndTests: XCTestCase {
                     ],
                 )
                 let transport = DNeuralUltrasoundRetryingTestTransport(
-                    base: repository.parseDictation,
+                    base: repository.parseTranscript,
                     isFoundationOnly: isFoundationOnly,
                 )
                 let factory = DNeuralUltrasoundModelFactory(
                     foundationProvider: foundationProvider,
                     serverModel: DNeuralUltrasoundModelServer(
-                        parseDictation: transport.parseDictation,
+                        parseTranscript: transport.parseTranscript,
                     ),
                 )
                 defer {
@@ -527,6 +536,7 @@ final class VoiceEndToEndTests: XCTestCase {
                     serverCalls = transport.calls
                 }
                 let request = DNeuralUltrasoundDictationParseRequest(
+                    selectedNeuralModelId: selectedNeuralModelId,
                     text: text,
                     examinationTypeId: typeID,
                     examinationTypeTitle: type.title,

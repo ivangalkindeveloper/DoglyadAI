@@ -100,6 +100,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func get<Response: Decodable>(
         url _: URL,
+        queryParameters _: [String: String]?,
     ) async throws -> Response {
         throw URLError(
             .notConnectedToInternet,
@@ -108,6 +109,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func get<Response: Decodable>(
         endPoint: String,
+        queryParameters _: [String: String]?,
         headers _: [String: String]?,
     ) async throws -> Response {
         lock.withLock {
@@ -122,6 +124,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func get<Response: Decodable>(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         body _: (some Encodable & Sendable)?,
         headers _: [String: String]?,
     ) async throws -> Response {
@@ -132,6 +135,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func post<Response: Decodable>(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         body _: (some Encodable & Sendable)?,
         headers _: [String: String]?,
         encoderUserInfo _: [CodingUserInfoKey: Any]?,
@@ -143,6 +147,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func post(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         body _: (some Encodable & Sendable)?,
         headers _: [String: String]?,
         encoderUserInfo _: [CodingUserInfoKey: Any]?,
@@ -154,6 +159,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func post<Response: Decodable>(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         data _: Data?,
         headers _: [String: String]?,
     ) async throws -> Response {
@@ -164,6 +170,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func serverEvents(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         headers _: [String: String]?,
     ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
         throw URLError(

@@ -82,7 +82,7 @@ def test_direct_checkout_preserves_paywall_choice_and_signed_callback_contact(
                 ),
             )
             app.state.container = SimpleNamespace(
-                subscriptions=ctx.service,
+                subscription_service=ctx.service,
             )
             async with httpx.AsyncClient(
                 transport=httpx.ASGITransport(

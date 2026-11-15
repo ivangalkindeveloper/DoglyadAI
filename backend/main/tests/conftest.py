@@ -20,7 +20,7 @@ from app.core.configuration.configuration import Configuration
 from app.core.configuration.configuration_loader import ConfigurationLoader
 from app.core.configuration.variables import Variables
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
-from app.service.dictation.dictation_parsing_service import DictationParsingService
+from app.service.dictation.transcript_parsing_service import TranscriptParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.mock_neural_model_service import MockNeuralModelService
 from app.service.report.report_generation_jobs import ReportGenerationJobs
@@ -54,19 +54,19 @@ def app(
     model_service = MockNeuralModelService()
     application.state.container = MainContainer(
         configuration=configuration,
-        configuration_responses=ConfigurationResponseService(
+        configuration_response_service=ConfigurationResponseService(
             configuration,
         ),
         model_service=model_service,
-        report_generation=ReportGenerationService(
+        report_generation_service=ReportGenerationService(
             configuration,
             model_service,
         ),
-        dictation_parsing=DictationParsingService(
+        transcript_parsing_service=TranscriptParsingService(
             configuration,
             model_service,
         ),
-        report_email=ReportEmailService(
+        report_email_service=ReportEmailService(
             variables,
             configuration.server.email,
             configuration.modules.workSettings,
@@ -115,7 +115,7 @@ def report_jobs(
     )
     jobs = ReportGenerationJobs(
         store,
-        app.state.container.report_generation,
+        app.state.container.report_generation_service,
         AsyncMock(
             spec=SubscriptionService,
         ),

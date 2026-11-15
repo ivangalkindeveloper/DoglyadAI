@@ -44,7 +44,7 @@ def generate() -> str:
         "            locale: process.language!.currentLocale,",
         "            proposalPrompt: model.proposalPrompt,",
         "            parameters: DNeuralGenerationParameters(temperature: model.temperature, maxTokens: model.maxTokens, maxContextTokens: model.maxContextTokens),",
-        "            parseDictation: process.ultrasoundReportRepository!.parseDictation",
+        "            parseTranscript: process.ultrasoundReportRepository!.parseTranscript",
         "        )",
         "    }",
         "}",

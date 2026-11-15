@@ -65,8 +65,14 @@ protocol UltrasoundReportRepositoryProtocol: AnyObject {
 
     @MainActor func clearAll() async throws
 
-    func parseDictation(
-        selectedNeuralModelId: String?,
+    func parseAudio(
+        audio: Data,
+        selectedNeuralModelId: String,
+        examinationTypeId: String,
+    ) async throws -> USAudioParseResponse
+
+    func parseTranscript(
+        selectedNeuralModelId: String,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO

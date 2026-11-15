@@ -138,6 +138,14 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
         subscriptionStatus?.isReportGenerationSettingsAvailable == true
     }
 
+    var isTranscriptParserSelectionEnabled: Bool {
+        transcriberType != .tOne
+    }
+
+    var effectiveTranscriptParserType: TranscriptParserType {
+        isTranscriptParserSelectionEnabled ? transcriptParserType : .server
+    }
+
     var reportGenerationSettingsAvailability: SubscriptionFeatureAvailability {
         isReportGenerationSettingsEnabled ? .available : .offered
     }
@@ -198,6 +206,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     }
 
     func onTapTranscriptParser() {
+        guard isTranscriptParserSelectionEnabled else {
+            return
+        }
         unfocus()
         coordinator.sheet(
             .selectTranscriptParser,
@@ -323,7 +334,7 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             ),
         )
 
-        switch transcriptParserType {
+        switch effectiveTranscriptParserType {
         case .foundationModels:
             guard container.examinationNeuralModelFactory.isFoundationModelsAvailable else {
                 onTapTranscriptParser()

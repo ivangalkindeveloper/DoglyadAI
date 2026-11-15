@@ -30,6 +30,7 @@ services:
     environment:
       <<: *main-environment
       LOG_RETENTION_DAYS: 365
+      T_ONE_MODEL_PATH: /app/models/t_one
 
   report_worker:
     <<: *main-app

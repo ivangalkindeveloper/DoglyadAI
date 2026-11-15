@@ -1,10 +1,10 @@
 struct USVoiceFormParseRequest: Encodable, Sendable {
-    let selectedNeuralModelId: String?
+    let selectedNeuralModelId: String
     let usExaminationTypeId: String
     let transcript: String
 
     init(
-        selectedNeuralModelId: String?,
+        selectedNeuralModelId: String,
         usExaminationTypeId: String,
         transcript: String,
     ) {

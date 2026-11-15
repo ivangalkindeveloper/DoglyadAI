@@ -13,7 +13,7 @@ public final class DNeuralUltrasoundModelFactory {
         locale: Locale,
         proposalPrompt: String,
         parameters: DNeuralGenerationParameters,
-        parseDictation: @escaping (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
+        parseTranscript: @escaping (String, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
     ) {
         self.init(
             foundationProvider: DNeuralUltrasoundFoundationModelProvider(
@@ -22,7 +22,7 @@ public final class DNeuralUltrasoundModelFactory {
                 parameters: parameters,
             ),
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: parseDictation,
+                parseTranscript: parseTranscript,
             ),
         )
     }

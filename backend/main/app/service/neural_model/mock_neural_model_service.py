@@ -76,8 +76,8 @@ class MockNeuralModelService(NeuralModelService):
                 return self._generate_report(
                     request,
                 )
-            case NeuralModelServiceOperation.PARSE_DICTATION:
-                return self._parse_dictation(
+            case NeuralModelServiceOperation.PARSE_TRANSCRIPT:
+                return self._parse_transcript(
                     request,
                 )
         assert_never(
@@ -122,7 +122,7 @@ class MockNeuralModelService(NeuralModelService):
             ensure_ascii=False,
         )
 
-    def _parse_dictation(
+    def _parse_transcript(
         self,
         request: NeuralModelServiceRequest,
     ) -> str:

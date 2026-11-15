@@ -86,6 +86,9 @@ enum ScanSpeechConfidencePolicy {
             return false
         }
         switch transcript.engine {
+        case .tOne:
+            // T-one does not return calibrated per-word confidence.
+            return false
         case .whisperKit:
             switch field.id {
             case .patientName, .examinationDescription:

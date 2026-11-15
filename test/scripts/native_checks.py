@@ -17,6 +17,12 @@ def validate_preview_references(atlas: list[dict], source_root: Path) -> None:
 
 
 REQUIRED_TESTS = [
+    "TOneSpeechTests/retryUploadsTheSameRecordingWithoutStartingMicrophoneAgain()",
+    "ScanSpeechAudioTests/audioUsesCombinedResponseAndOnlyEditedTextMakesAnotherRequest()",
+    "HttpContentTypeTests/sessionDefaultsApplyToGetAndPostAndExplicitHeadersWin()",
+    "TOneSpeechTests/cancellationDiscardsRecordingAndLateResponse()",
+    "TOneSpeechTests/factoryRequiresRussianAndAnExplicitTransport()",
+    "ScanSpeechConfidencePolicyTests/toneProposalsRequireReviewWithoutCalibratedAudioEvidence()",
     "ReportReceivedObservationTests/reportUpdatesReuseTheContentPhaseAndStopAfterLeaving()",
     "ScanSpeechObservationTests/closingCancelsPendingTranscriptionBeforeTheDisappearEvent()",
     "ScanSpeechObservationTests/dismissedPresentationIgnoresLateControllerChanges()",
@@ -155,7 +161,7 @@ REQUIRED_TESTS = [
     "PhotoViewImageTransformTests/offCenterZoomKeepsTheTouchedPixelInPlace()",
     "PhotoViewImageTransformTests/panningStopsAtImageEdges()",
     "PhotoViewImageTransformTests/minimumZoomReturnsToTheOriginalPosition()",
-    "SettingsAITests/transcriberListOffersOnlyTheAvailableAppleEngineAndWhisperKit(appleTranscriber:)",
+    "SettingsAITests/transcriberListOffersAvailableAppleEngineWhisperKitAndRussianTOne(appleTranscriber:)",
     "SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)",
     "SettingsAITests/reportSettingsRequireProWhileSpeechSettingsRemainEditable(type:availability:)",
 ]
@@ -210,8 +216,8 @@ ARGUMENT_COUNTS = {
     "SubscriptionPaywallTests/copyingSelectionPreservesItsConcretePhaseAndOriginalSnapshot(isPending:)": 2,
     "SubscriptionPaywallTests/cancelledCatalogDiscardsLateSuccessAndFailure(isFailure:)": 2,
     "StatePersistenceTests/backgroundSuspendsStreamWithoutInterruptionAndResumesSameTask(isImmediateReturn:)": 2,
-    "SettingsAITests/transcriberListOffersOnlyTheAvailableAppleEngineAndWhisperKit(appleTranscriber:)": 3,
-    "SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)": 6,
+    "SettingsAITests/transcriberListOffersAvailableAppleEngineWhisperKitAndRussianTOne(appleTranscriber:)": 3,
+    "SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)": 8,
     "SettingsAITests/reportSettingsRequireProWhileSpeechSettingsRemainEditable(type:availability:)": 9,
 }
 

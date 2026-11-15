@@ -9,6 +9,8 @@ struct ScanSpeechBottomView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
+        case _ as ScanSpeechTranscriptionErrorState:
+            ScanSpeechTranscriptionErrorBottomView()
         case _ as ScanSpeechModelPreparationErrorState:
             ScanSpeechModelRetryButtonView(
                 preparation: .failed,

@@ -11,4 +11,4 @@ tags:
     visible:
       id: regression.atlas-scanspeech-0b84d79e8e
     timeout: 15000
-- takeScreenshot: 14-ScanSpeech-0b84d79e8e
+- takeScreenshot: 15-ScanSpeech-0b84d79e8e

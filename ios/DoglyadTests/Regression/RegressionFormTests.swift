@@ -379,6 +379,7 @@
 
         func testTranscriberAvailabilityRefreshesOnForegroundWithoutDuplicates() async {
             let container = DependencyContainer.previewable
+            let tOneOptions: [TranscriberType] = container.language.currentLocale.language.languageCode?.identifier == "ru" ? [.tOne] : []
             var engine: DSpeechEngine? = .speechAnalyzer
             var selected: TranscriberType?
             let model = SelectTranscriberViewModel(
@@ -409,9 +410,9 @@
             await model.lastTask?.value
             XCTAssertEqual(
                 model.state.options,
-                [.speechAnalyzer, .whisperKit],
+                [.speechAnalyzer, .whisperKit] + tOneOptions,
             )
-            let changes: [(DSpeechEngine?, [TranscriberType])] = [(.sfSpeechRecognizer, [.sfSpeechRecognizer, .whisperKit]), (nil, [.whisperKit])]
+            let changes: [(DSpeechEngine?, [TranscriberType])] = [(.sfSpeechRecognizer, [.sfSpeechRecognizer, .whisperKit] + tOneOptions), (nil, [.whisperKit] + tOneOptions)]
             for (next, expected) in changes {
                 engine = next
                 NotificationCenter.default.post(

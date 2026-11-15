@@ -6,6 +6,7 @@ from app.model.billing.billing_service_config import BillingServiceConfig
 from app.model.email_config import EmailConfig
 from app.model.endpoint_config import EndpointConfig
 from app.model.http_client_config import HttpClientConfig
+from app.model.speech.t_one_config import TOneConfig
 from app.model.ultrasound.us_report_generation_config import USReportGenerationConfig
 from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
 
@@ -18,6 +19,9 @@ class MainServerConfig(BaseModel):
 
     report_generation: USReportGenerationConfig = Field(
         default_factory=USReportGenerationConfig,
+    )
+    speech: TOneConfig = Field(
+        default_factory=TOneConfig,
     )
     endpoints: dict[str, EndpointConfig]
     billing: BillingServiceConfig

@@ -16,6 +16,8 @@ class Variables(BaseSettings):
     # Selects configuration documents and the matching Robokassa test/live mode.
     # Generation routing and App Check remain identical in both environments.
     environment: Literal["development", "production"]
+    # Set only in the main HTTP process, never in billing/report workers.
+    t_one_model_path: Path | None = None
     config_dir: Path | None = None
     log_dir: Path | None = None
     log_retention_days: int = 365

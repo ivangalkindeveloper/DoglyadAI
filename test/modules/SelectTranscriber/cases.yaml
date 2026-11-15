@@ -12,7 +12,7 @@ cases:
     запись и inference Apple не запускаются.
   steps:
   - action: Открыть селектор
-    expect: WhisperKit отображается; Apple-вариант показан только при доступном Apple engine.
+    expect: WhisperKit отображается; Apple-вариант показан только при доступном Apple engine; T-one доступен только для русского языка.
   - action: Выбрать каждый доступный вариант, сохранить настройки, перезапустить
     expect: Селектор закрывается; выбор отражается в SettingsAI и сохраняется.
   - action: Вернуть приложение из фона после изменения доступности
@@ -26,7 +26,8 @@ cases:
     kind: mixed
     flows:
     - e2e-settingsai-providers
+    - e2e-settingsai-tone
     nativeTests:
     - RegressionFormTests/testTranscriberAvailabilityRefreshesOnForegroundWithoutDuplicates()
-    - SettingsAITests/transcriberListOffersOnlyTheAvailableAppleEngineAndWhisperKit(appleTranscriber:)
+    - SettingsAITests/transcriberListOffersAvailableAppleEngineWhisperKitAndRussianTOne(appleTranscriber:)
     - SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)

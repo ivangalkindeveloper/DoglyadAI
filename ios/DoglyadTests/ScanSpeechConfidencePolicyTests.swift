@@ -778,6 +778,43 @@ struct ScanSpeechConfidencePolicyTests {
         )
     }
 
+    @Test
+    func toneProposalsRequireReviewWithoutCalibratedAudioEvidence() throws {
+        let proposal = try parsed(
+            text,
+        )
+        let transcript = DSpeechTranscript(
+            rawText: text,
+            correctedText: text,
+            locale: Locale(
+                identifier: "ru",
+            ),
+            engine: .tOne,
+            completion: .finished,
+        )
+        let plan = ScanSpeechConfidencePolicy.plan(
+            proposal: proposal,
+            transcript: transcript,
+            parsedText: text,
+            noComplaintsPattern: VoiceLocalizationTestSupport.dictation(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ).pattern(
+                .noComplaintsValue,
+            ),
+        )
+        #expect(
+            !proposal.proposals.isEmpty,
+        )
+        #expect(
+            plan.automatic.isEmpty,
+        )
+        #expect(
+            plan.uncertain.count == proposal.proposals.count,
+        )
+    }
+
     private func parsed(
         _ text: String,
     ) throws -> DNeuralUltrasoundDictationProposal {

@@ -194,7 +194,7 @@ async def run_server_matrix_parse(
                             started = time.monotonic()
                             try:
                                 response = await client.post(
-                                    base_url.rstrip("/") + "/v1/ultrasound/parse_dictation",
+                                    base_url.rstrip("/") + "/v1/ultrasound/parse_transcript",
                                     headers={"X-Firebase-AppCheck": value, "Accept-Language": case["locale"]},
                                     json={
                                         "selectedNeuralModelId": model_id,

@@ -26,7 +26,29 @@
     }
 
     #Preview(
-        "03 SettingsAIErrorState PreferencesSaveFailed",
+        "03 SettingsAIInitialState TOneServerParsing",
+    ) {
+        SettingsAIPreviewView(
+            state: SettingsAIInitialState(),
+            transcriberType: .tOne,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 SettingsAIInitialState TOneServerParsing ScrollEnd",
+    ) {
+        SettingsAIPreviewView(
+            state: SettingsAIInitialState(),
+            transcriberType: .tOne,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        ).previewScrollToEnd()
+    }
+
+    #Preview(
+        "05 SettingsAIErrorState PreferencesSaveFailed",
     ) {
         SettingsAIPreviewView(
             state: SettingsAIErrorState(
@@ -40,7 +62,7 @@
     }
 
     #Preview(
-        "04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd",
+        "06 SettingsAIErrorState PreferencesSaveFailed ScrollEnd",
     ) {
         SettingsAIPreviewView(
             state: SettingsAIErrorState(

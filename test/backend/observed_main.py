@@ -31,7 +31,7 @@ class RegressionObserver:
             return
         path = scope.get("path", "")
         observed = scope["type"] == "http" and (
-            path in {"/v1/ultrasound/parse_dictation", "/v1/send_report_email"}
+            path in {"/v1/ultrasound/parse_transcript", "/v1/send_report_email"}
             or re.fullmatch(
                 r"/v1/ultrasound/report_generations(?:/[a-fA-F0-9-]{36}(?:/events)?)?",
                 path,
@@ -105,7 +105,7 @@ class RegressionObserver:
                     event["request"]["photoCount"] = len(data.get("photos", []))
                     if "requestId" in body:
                         event["request"]["requestId"] = body["requestId"]
-                    if path.endswith("parse_dictation"):
+                    if path.endswith("parse_transcript"):
                         event["request"] = {
                             key: body[key]
                             for key in (

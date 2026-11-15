@@ -103,7 +103,7 @@ class ReportGenerationWorker:
                                 self.execute(
                                     job,
                                     store,
-                                    container.report_generation,
+                                    container.report_generation_service,
                                     container.model_service,
                                     subscriptions,
                                     timeout,

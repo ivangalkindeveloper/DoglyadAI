@@ -38,7 +38,7 @@
 
             model.preparePreview(
                 state: state.copyWith(
-                    options: [.speechAnalyzer, .whisperKit],
+                    options: [.speechAnalyzer, .whisperKit, .tOne],
                 ),
             )
             return ModuleBottomSheetPreviewView {

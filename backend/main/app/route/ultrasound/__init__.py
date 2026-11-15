@@ -4,7 +4,8 @@ from fastapi import APIRouter
 
 from app.route.ultrasound.examination_neural_models import router as examination_neural_models_router
 from app.route.ultrasound.examination_types import router as examination_types_router
-from app.route.ultrasound.parse_dictation import router as parse_dictation_router
+from app.route.ultrasound.parse_audio import router as parse_audio_router
+from app.route.ultrasound.parse_transcript import router as parse_transcript_router
 from app.route.ultrasound.report_generations import router as report_generations_router
 
 router = APIRouter(
@@ -17,8 +18,12 @@ router.include_router(
     examination_neural_models_router,
 )
 router.include_router(
-    parse_dictation_router,
+    parse_transcript_router,
 )
 router.include_router(
     report_generations_router,
+)
+
+router.include_router(
+    parse_audio_router,
 )

@@ -47,7 +47,7 @@ Startup logs contain `Model service type: mock` and `Mock model service configur
 `NeuralModelServiceFactory.create()` creates one `MockNeuralModelService` at startup. Both generation routes keep their normal prompts, schemas, validation and response models. The internal `NeuralModelServiceRequest` identifies the operation and resolved language; this metadata is not added to the GPU HTTP request or client API.
 
 - `POST /v1/ultrasound/report_generations` starts a job and returns `202`. Read its snapshot or SSE events to receive the selected language's demonstration report. Explicit measurement fragments from the examination notes are appended verbatim, using the same localized pattern as content validation. Values from the report template are not copied. Recommendations and description remarks follow the request flags. Photo remarks appear only when requested and photos are present: each uploaded photo receives two fixed points using its actual ID.
-- `POST /v1/ultrasound/parse_dictation` returns fixture proposals whose evidence appears exactly once in the supplied transcript, ignoring case. The normal source validator still checks the result. Unmatched input receives no canned proposals; existing source-based validation can still extract explicitly labeled fields from that input.
+- `POST /v1/ultrasound/parse_transcript` returns fixture proposals whose evidence appears exactly once in the supplied transcript, ignoring case. The normal source validator still checks the result. Unmatched input receives no canned proposals; existing source-based validation can still extract explicitly labeled fields from that input.
 
 Fixtures live in [`mock/`](mock/), beside `config`, with one `report.json` and `voice_form.json` per language. They are loaded and validated at startup; restart the backend after editing them. Docker copies them separately with `COPY mock /app/mock`.
 
@@ -60,6 +60,10 @@ For dictation parsing, main resolves the selected examination's localized `conte
 During dictation parsing, a nonblank clinical `value` with valid verbatim `evidence` is retained even when it changes words, measurements, negations or laterality; differences receive `questionable` accuracy for physician review. Source extraction fills clinical fields omitted by the model. `medicalTermCorrections` belongs only to the client's preprocessing corrector and never limits the model's proposed corrections. Report validation permits medical term repairs while retaining its checks on explicit measurements and misplaced sections.
 
 Report prompts separate an explicitly dictated conclusion from findings. Templates supply structure, not evidence of normality. Content validation removes a misplaced conclusion or complaint section only when its complete text is independently supported by the corresponding section. It retains following findings and rejects changed or missing explicit length/volume measurements; unsupported section removal also fails validation. These checks supplement generation and do not establish the clinical accuracy of an image interpretation.
+
+## Server speech recognition
+
+T-one runs on main CPU in one dedicated process. The GPU service receives only the transcript parsing prompt. See [SPEECH.md](SPEECH.md) for setup, limits and retry behavior.
 
 ## Voice test scenarios
 
@@ -79,7 +83,7 @@ The fixtures affect server-side parsing only. If the iOS app selects Apple Found
 
 The current client/report contract uses `settingsAI` (`SettingsAI`), including report generation parameters, `transcriberType` and `transcriptParserType`. The iOS `SettingsAIRepository` persists the complete settings as one encoded value. Transcription defaults to WhisperKit; the initial parser is FoundationModels when available for the current device and locale, otherwise server parsing. Subsequent runs honor the saved choice.
 
-`POST /v1/ultrasound/parse_dictation` accepts `selectedNeuralModelId` alongside `usExaminationTypeId` and `transcript`. It resolves that model through the same published model catalog as report generation. A missing selection uses the catalog's default model. The server-only `server.json` contains the parsing token limit under `voice_form_parsing`; parsing keeps its own prompt, schema and temperature of zero. Audio stays on the client.
+`POST /v1/ultrasound/parse_transcript` accepts `selectedNeuralModelId` alongside `usExaminationTypeId` and `transcript`. It resolves that model through the same published model catalog as report generation. The selected model ID is required; missing, null or blank values return 422. The server-only `server.json` contains the parsing token limit under `voice_form_parsing`; parsing keeps its own prompt, schema and temperature of zero. This endpoint accepts only a transcript; T-one audio uses `/v1/ultrasound/parse_audio`.
 
 The SettingsAI screen and its entry cards are available independently of Pro. In iOS, `entitlement.settingsAI` applies only to report-generation controls: Markdown, temperature and token limit require an active Pro subscription with this entitlement available. Speech choices stay editable. Saving speech choices without Pro preserves stored report-generation preferences; generation uses the default report parameters until Pro access is available. Mapping `SettingsAIDB` to the domain trims speech identifiers and defaults missing, blank or unknown values to WhisperKit and server parsing without throwing.
 
@@ -106,7 +110,7 @@ only billing services through `ServiceFactory`; it does not build FastAPI routes
 initialize Firebase, select a model or construct SMTP services. Cancellation closes
 both its connection pool and HTTP client. See [BILLING.md](BILLING.md).
 
-HTTP handlers receive services and the request language through FastAPI `Depends`. `ReportGenerationService`, `DictationParsingService`, `ConfigurationResponseService` and `ReportEmailService` own their respective operations. Their dependencies are passed through constructors; language, App Check token and request ID remain per-request method arguments. `ConfigurationLoader` returns data instead of publishing module-global dictionaries. `PromptFactory`, `ReportValidator` and `VoiceFormValidator` receive their configuration or localization explicitly.
+HTTP handlers receive services and the request language through FastAPI `Depends`. `ReportGenerationService`, `TranscriptParsingService`, `ConfigurationResponseService` and `ReportEmailService` own their respective operations. Their dependencies are passed through constructors; language, App Check token and request ID remain per-request method arguments. `ConfigurationLoader` returns data instead of publishing module-global dictionaries. `PromptFactory`, `ReportValidator` and `VoiceFormValidator` receive their configuration or localization explicitly.
 
 ## Server configuration
 

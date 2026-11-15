@@ -12,3 +12,10 @@ asyncpg==0.30.0
 alembic==1.17.1
 app-store-server-library==3.1.2
 cryptography==50.0.2
+tone @ git+https://github.com/voicekit-team/T-one.git@3c5b6c015038173840e62cea99e10cdb1c759116
+numpy==1.26.4
+onnxruntime==1.32.0
+kenlm==0.3.0
+pyctcdecode==0.5.0
+miniaudio==1.73
+huggingface-hub==0.36.2

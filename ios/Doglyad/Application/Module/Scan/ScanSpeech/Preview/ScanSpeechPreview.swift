@@ -107,7 +107,17 @@
     }
 
     #Preview(
-        "10 ScanSpeechReviewTranscriptState TranscriptReview",
+        "10 ScanSpeechTranscriptionErrorState RecordingRetained",
+    ) {
+        ScanSpeechPreviewView(
+            state: ScanSpeechTranscriptionErrorState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "11 ScanSpeechReviewTranscriptState TranscriptReview",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewTranscriptState(),
@@ -117,7 +127,7 @@
     }
 
     #Preview(
-        "11 ScanSpeechReviewTranscriptState TranscriptReview ScrollEnd",
+        "12 ScanSpeechReviewTranscriptState TranscriptReview ScrollEnd",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewTranscriptState(),
@@ -128,7 +138,7 @@
     }
 
     #Preview(
-        "12 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript",
+        "13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewParsingLoadingState(
@@ -140,7 +150,7 @@
     }
 
     #Preview(
-        "13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd",
+        "14 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewParsingLoadingState(
@@ -153,7 +163,7 @@
     }
 
     #Preview(
-        "14 ScanSpeechReviewProposalState MultipleFields",
+        "15 ScanSpeechReviewProposalState MultipleFields",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechProposalPreviewFixture(
@@ -165,7 +175,7 @@
     }
 
     #Preview(
-        "15 ScanSpeechReviewProposalState MultipleFields ScrollEnd",
+        "16 ScanSpeechReviewProposalState MultipleFields ScrollEnd",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechProposalPreviewFixture(
@@ -178,7 +188,7 @@
     }
 
     #Preview(
-        "16 ScanSpeechReviewProposalState PatientNotPrepared",
+        "17 ScanSpeechReviewProposalState PatientNotPrepared",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechProposalPreviewFixture(
@@ -191,7 +201,7 @@
     }
 
     #Preview(
-        "17 ScanSpeechReviewProposalState PatientNotPrepared ScrollEnd",
+        "18 ScanSpeechReviewProposalState PatientNotPrepared ScrollEnd",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechProposalPreviewFixture(
@@ -205,7 +215,7 @@
     }
 
     #Preview(
-        "18 ScanSpeechProposalPreviewView ReviewRequired",
+        "19 ScanSpeechProposalPreviewView ReviewRequired",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -217,7 +227,7 @@
     }
 
     #Preview(
-        "19 ScanSpeechProposalPreviewView SelectedProposal",
+        "20 ScanSpeechProposalPreviewView SelectedProposal",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -230,7 +240,7 @@
     }
 
     #Preview(
-        "20 ScanSpeechProposalPreviewView MeasurementAndUnit",
+        "21 ScanSpeechProposalPreviewView MeasurementAndUnit",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -242,7 +252,7 @@
     }
 
     #Preview(
-        "21 ScanSpeechProposalPreviewView SideAndNegation",
+        "22 ScanSpeechProposalPreviewView SideAndNegation",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -254,7 +264,7 @@
     }
 
     #Preview(
-        "22 ScanSpeechProposalPreviewView MultipleFields",
+        "23 ScanSpeechProposalPreviewView MultipleFields",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .multipleFields,
@@ -265,7 +275,7 @@
     }
 
     #Preview(
-        "23 ScanSpeechProposalPreviewView PartialResult",
+        "24 ScanSpeechProposalPreviewView PartialResult",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .partialResult,
@@ -276,7 +286,7 @@
     }
 
     #Preview(
-        "24 ScanSpeechProposalPreviewView LongClinicalText",
+        "25 ScanSpeechProposalPreviewView LongClinicalText",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .clinicalText,
@@ -287,7 +297,7 @@
     }
 
     #Preview(
-        "25 ScanSpeechProposalPreviewView NoRecognizedFields",
+        "26 ScanSpeechProposalPreviewView NoRecognizedFields",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .empty,
@@ -298,7 +308,7 @@
     }
 
     #Preview(
-        "26 ScanSpeechTranscriptPreviewView FinishedDictation",
+        "27 ScanSpeechTranscriptPreviewView FinishedDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .finished,
@@ -308,7 +318,7 @@
     }
 
     #Preview(
-        "27 ScanSpeechTranscriptPreviewView InterruptedLongDictation",
+        "28 ScanSpeechTranscriptPreviewView InterruptedLongDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .interrupted,
@@ -318,7 +328,7 @@
     }
 
     #Preview(
-        "28 ScanSpeechTranscriptPreviewView NoRecognizedSpeech",
+        "29 ScanSpeechTranscriptPreviewView NoRecognizedSpeech",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .failed,
@@ -328,7 +338,7 @@
     }
 
     #Preview(
-        "29 ScanSpeechTranscriptPreviewView ParsingDictation",
+        "30 ScanSpeechTranscriptPreviewView ParsingDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .parsing,

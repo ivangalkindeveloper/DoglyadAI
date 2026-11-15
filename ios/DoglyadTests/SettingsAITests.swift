@@ -21,6 +21,7 @@ struct SettingsAITests {
             identifier: "en",
         )
         let isSupported: Bool = switch transcriber {
+        case .tOne: false
         case .whisperKit:
             true
         case .speechAnalyzer:
@@ -56,6 +57,10 @@ struct SettingsAITests {
         }
         let controller = try await makeController()
         switch transcriber {
+        case .tOne:
+            #expect(
+                controller is DSpeechControllerTOne,
+            )
         case .whisperKit:
             #expect(
                 controller is DSpeechControllerWhisperKit,
@@ -86,7 +91,7 @@ struct SettingsAITests {
             .sfSpeechRecognizer,
         )],
     )
-    func transcriberListOffersOnlyTheAvailableAppleEngineAndWhisperKit(
+    func transcriberListOffersAvailableAppleEngineWhisperKitAndRussianTOne(
         appleTranscriber: TranscriberType?,
     ) async {
         let container = DependencyContainer.previewable
@@ -124,21 +129,27 @@ struct SettingsAITests {
         switch appleTranscriber {
         case .speechAnalyzer:
             #expect(
-                model.state.options == [.speechAnalyzer, .whisperKit],
+                model.state.options == [.speechAnalyzer, .whisperKit] + tOneOptions(
+                    container,
+                ),
             )
             model.onSelect(
                 .sfSpeechRecognizer,
             )
         case .sfSpeechRecognizer:
             #expect(
-                model.state.options == [.sfSpeechRecognizer, .whisperKit],
+                model.state.options == [.sfSpeechRecognizer, .whisperKit] + tOneOptions(
+                    container,
+                ),
             )
             model.onSelect(
                 .speechAnalyzer,
             )
-        case .none, .whisperKit:
+        case .none, .whisperKit, .tOne:
             #expect(
-                model.state.options == [.whisperKit],
+                model.state.options == [.whisperKit] + tOneOptions(
+                    container,
+                ),
             )
             model.onSelect(
                 .speechAnalyzer,
@@ -836,6 +847,12 @@ struct SettingsAITests {
         #expect(
             selected == .server,
         )
+    }
+
+    private func tOneOptions(
+        _ container: DependencyContainer,
+    ) -> [TranscriberType] {
+        container.language.currentLocale.language.languageCode?.identifier == "ru" ? [.tOne] : []
     }
 
     private func makeStatus(

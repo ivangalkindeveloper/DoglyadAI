@@ -44,9 +44,6 @@ public final class DHttpClient: DHttpClientProtocol {
         timeoutIntervalForRequest: TimeInterval,
         timeoutIntervalForResource: TimeInterval,
     ) {
-        // URLSession copies its configuration when created, so mutating the old one is a
-        // no-op — the session has to be replaced for new timeouts to take effect. Safe
-        // during initialization: nothing is in flight yet.
         session = Self.makeSession(
             interceptors: interceptors,
             timeoutIntervalForRequest: timeoutIntervalForRequest,
@@ -56,9 +53,13 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func get<Response: Decodable>(
         url: URL,
+        queryParameters: [String: String]? = nil,
     ) async throws -> Response {
-        let response = await session.request(
-            url,
+        let response = try await session.request(
+            makeURL(
+                url.absoluteString,
+                queryParameters: queryParameters,
+            ),
             method: .get,
         )
         .validate()
@@ -72,10 +73,14 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func get<Response: Decodable>(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         headers: [String: String]? = nil,
     ) async throws -> Response {
-        let response = await session.request(
-            baseApiUrl + endPoint,
+        let response = try await session.request(
+            makeURL(
+                baseApiUrl + endPoint,
+                queryParameters: queryParameters,
+            ),
             method: .get,
             headers: headers.map(
                 HTTPHeaders.init,
@@ -92,11 +97,15 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func get<Response: Decodable>(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
     ) async throws -> Response {
-        let response = await session.request(
-            baseApiUrl + endPoint,
+        let response = try await session.request(
+            makeURL(
+                baseApiUrl + endPoint,
+                queryParameters: queryParameters,
+            ),
             method: .get,
             parameters: body,
             encoder: JSONParameterEncoder(
@@ -117,6 +126,7 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func post<Response: Decodable>(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
         encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
@@ -130,8 +140,11 @@ public final class DHttpClient: DHttpClientProtocol {
             encoder = jsonEncoder
         }
 
-        let response = await session.request(
-            baseApiUrl + endPoint,
+        let response = try await session.request(
+            makeURL(
+                baseApiUrl + endPoint,
+                queryParameters: queryParameters,
+            ),
             method: .post,
             parameters: body,
             encoder: JSONParameterEncoder(
@@ -152,6 +165,7 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func post(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
         encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
@@ -165,8 +179,11 @@ public final class DHttpClient: DHttpClientProtocol {
             encoder = jsonEncoder
         }
 
-        let response = await session.request(
-            baseApiUrl + endPoint,
+        let response = try await session.request(
+            makeURL(
+                baseApiUrl + endPoint,
+                queryParameters: queryParameters,
+            ),
             method: .post,
             parameters: body,
             encoder: JSONParameterEncoder(
@@ -186,26 +203,20 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func post<Response: Decodable>(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         data: Data?,
         headers: [String: String]? = nil,
     ) async throws -> Response {
-        guard let url = URL(
-            string: baseApiUrl + endPoint,
-        ) else {
-            throw URLError(
-                .badURL,
-            )
-        }
+        let url = try makeURL(
+            baseApiUrl + endPoint,
+            queryParameters: queryParameters,
+        )
         var request = URLRequest(
             url: url,
         )
         request.httpMethod = "POST"
         request.httpBody = data
         request.allHTTPHeaderFields = headers
-        request.setValue(
-            "application/json",
-            forHTTPHeaderField: "Content-Type",
-        )
         return try await session.request(
             request,
         ).validate().serializingDecodable(
@@ -216,15 +227,13 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func serverEvents(
         endPoint: String,
+        queryParameters: [String: String]? = nil,
         headers: [String: String]? = nil,
     ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
-        guard let url = URL(
-            string: baseApiUrl + endPoint,
-        ) else {
-            throw URLError(
-                .badURL,
-            )
-        }
+        let url = try makeURL(
+            baseApiUrl + endPoint,
+            queryParameters: queryParameters,
+        )
         var request = URLRequest(
             url: url,
             timeoutInterval: 30,
@@ -278,12 +287,59 @@ public final class DHttpClient: DHttpClientProtocol {
         }
     }
 
+    private func makeURL(
+        _ value: String,
+        queryParameters: [String: String]?,
+    ) throws -> URL {
+        guard var components = URLComponents(
+            string: value,
+        ) else {
+            throw URLError(
+                .badURL,
+            )
+        }
+        if let queryParameters, !queryParameters.isEmpty {
+            var query = URLComponents()
+            query.queryItems = queryParameters.sorted {
+                $0.key < $1.key
+            }.map {
+                URLQueryItem(
+                    name: $0.key,
+                    value: $0.value,
+                )
+            }
+            // Form-style query decoders treat a literal plus as a space. Encode
+            // new values without changing the existing URL's query semantics.
+            let encoded = query.percentEncodedQuery?.replacingOccurrences(
+                of: "+",
+                with: "%2B",
+            )
+            components.percentEncodedQuery = [components.percentEncodedQuery, encoded]
+                .compactMap(
+                    \.self,
+                )
+                .filter {
+                    !$0.isEmpty
+                }
+                .joined(
+                    separator: "&",
+                )
+        }
+        guard let url = components.url else {
+            throw URLError(
+                .badURL,
+            )
+        }
+        return url
+    }
+
     private static func makeSession(
         interceptors: [any DHttpInterceptorProtocol],
         timeoutIntervalForRequest: TimeInterval,
         timeoutIntervalForResource: TimeInterval,
     ) -> Session {
         let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = ["Content-Type": "application/json"]
         configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
         configuration.timeoutIntervalForResource = timeoutIntervalForResource
         return Session(

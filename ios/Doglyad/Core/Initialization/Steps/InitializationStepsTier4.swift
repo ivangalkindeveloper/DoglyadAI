@@ -90,7 +90,7 @@ extension InitializationProcess {
                             locale: locale,
                             proposalPrompt: config.proposalPrompt,
                             parameters: parameters,
-                            parseDictation: repository.parseDictation,
+                            parseTranscript: repository.parseTranscript,
                         )
                     }
                 },

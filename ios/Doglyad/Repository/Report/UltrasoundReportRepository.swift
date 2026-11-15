@@ -165,8 +165,26 @@ final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
         try await database.clearAll()
     }
 
-    func parseDictation(
-        selectedNeuralModelId: String?,
+    func parseAudio(
+        audio: Data,
+        selectedNeuralModelId: String,
+        examinationTypeId: String,
+    ) async throws -> USAudioParseResponse {
+        try await httpClient.post(
+            endPoint: "/ultrasound/parse_audio",
+            queryParameters: [
+                "selectedNeuralModelId": selectedNeuralModelId,
+                "usExaminationTypeId": examinationTypeId,
+            ],
+            data: audio,
+            headers: [
+                "Content-Type": "application/octet-stream",
+            ],
+        )
+    }
+
+    func parseTranscript(
+        selectedNeuralModelId: String,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
@@ -176,7 +194,7 @@ final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
             transcript: transcript,
         )
         return try await httpClient.post(
-            endPoint: "/ultrasound/parse_dictation",
+            endPoint: "/ultrasound/parse_transcript",
             body: request,
         )
     }

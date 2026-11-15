@@ -187,7 +187,7 @@ def test_mock_startup_still_initializes_and_requires_app_check(
     )
     assert (
         client.post(
-            "/v1/ultrasound/parse_dictation",
+            "/v1/ultrasound/parse_transcript",
             json={},
         ).status_code
         == 401
@@ -228,7 +228,7 @@ def test_mock_report_respects_flags_language_and_uploaded_ids(
     )
 
     report = asyncio.run(
-        client.app.state.container.report_generation.generate(
+        client.app.state.container.report_generation_service.generate(
             body,
             language_code=language,
         ),
@@ -260,7 +260,7 @@ def test_mock_report_does_not_invent_photos(
     )
 
     report = asyncio.run(
-        client.app.state.container.report_generation.generate(
+        client.app.state.container.report_generation_service.generate(
             body,
             language_code=LanguageCode.EN,
         ),
@@ -322,7 +322,7 @@ def test_mock_report_preserves_source_measurements_without_copying_template_valu
         )
 
     report = asyncio.run(
-        client.app.state.container.report_generation.generate(
+        client.app.state.container.report_generation_service.generate(
             body,
             language_code=language,
         ),
@@ -374,7 +374,7 @@ def test_mock_report_accepts_client_settings_ai(
     )
 
     report = asyncio.run(
-        client.app.state.container.report_generation.generate(
+        client.app.state.container.report_generation_service.generate(
             USExaminationRequest.model_validate(
                 body,
             ),
@@ -438,9 +438,13 @@ def test_mock_voice_scenario_passes_the_real_source_validator(
     )
 
     response = client.post(
-        "/v1/ultrasound/parse_dictation",
+        "/v1/ultrasound/parse_transcript",
         headers={"Accept-Language": language.value},
-        json={"usExaminationTypeId": "abdominalCavity", "transcript": fixture.transcript},
+        json={
+            "selectedNeuralModelId": _MODEL_ID,
+            "usExaminationTypeId": "abdominalCavity",
+            "transcript": fixture.transcript,
+        },
     )
 
     assert response.status_code == 200, response.text
@@ -475,7 +479,7 @@ def test_mock_voice_does_not_return_missing_or_ambiguous_evidence(
     transcript: str,
 ) -> None:
     request = NeuralModelServiceRequest(
-        operation=NeuralModelServiceOperation.PARSE_DICTATION,
+        operation=NeuralModelServiceOperation.PARSE_TRANSCRIPT,
         language_code=language,
         model_id=_MODEL_ID,
         system_prompt="",

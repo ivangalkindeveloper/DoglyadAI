@@ -1,4 +1,5 @@
 @testable import Doglyad
+import DoglyadNeuralModel
 
 @MainActor
 func makeStateTestContainer(
@@ -10,6 +11,7 @@ func makeStateTestContainer(
     subscriptionBackendRepository: (any SubscriptionBackendRepositoryProtocol)? = nil,
     applicationConfig: ApplicationConfig? = nil,
     usExaminationTypesById: [String: USExaminationType]? = nil,
+    examinationNeuralModelFactory: DNeuralUltrasoundModelFactory? = nil,
 ) -> DependencyContainer {
     let base = DependencyContainer.previewable
     return DependencyContainer(
@@ -30,7 +32,7 @@ func makeStateTestContainer(
         applicationConfig: applicationConfig ?? base.applicationConfig,
         language: base.language,
         l10n: base.l10n,
-        examinationNeuralModelFactory: base.examinationNeuralModelFactory,
+        examinationNeuralModelFactory: examinationNeuralModelFactory ?? base.examinationNeuralModelFactory,
         usExaminationTypeGroups: base.usExaminationTypeGroups,
         usExaminationTypesById: usExaminationTypesById ?? base.usExaminationTypesById,
         usExaminationTypeDefault: base.usExaminationTypeDefault,

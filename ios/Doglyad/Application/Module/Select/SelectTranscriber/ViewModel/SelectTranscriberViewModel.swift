@@ -26,11 +26,19 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
             )
         },
     ) {
+        var options: [TranscriberType] = [.whisperKit]
+        if container.language.currentLocale.language.languageCode?.identifier == "ru" {
+            options.append(
+                .tOne,
+            )
+        }
         currentValue = arguments.currentValue
         self.arguments = arguments
         self.getAvailableAppleEngine = getAvailableAppleEngine
         super.init(
-            state: SelectTranscriberInitialState(),
+            state: SelectTranscriberInitialState(
+                options: options,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -105,11 +113,16 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
             guard !Task.isCancelled else {
                 return
             }
-            let options = engine.map {
+            var options = engine.map {
                 [TranscriberType(
                     engine: $0,
                 ), .whisperKit]
             } ?? [.whisperKit]
+            if self.container.language.currentLocale.language.languageCode?.identifier == "ru" {
+                options.append(
+                    .tOne,
+                )
+            }
             self.emit(
                 self.state.copyWith(
                     options: options,

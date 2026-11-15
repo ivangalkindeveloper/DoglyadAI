@@ -59,7 +59,7 @@
                     maxTokens: model.maxTokens,
                     maxContextTokens: model.maxContextTokens,
                 ),
-                parseDictation: process.ultrasoundReportRepository!.parseDictation,
+                parseTranscript: process.ultrasoundReportRepository!.parseTranscript,
             )
         }
     }
@@ -534,15 +534,30 @@
             return try await wrapped.clearAll()
         }
 
-        func parseDictation(
-            selectedNeuralModelId: String?,
+        func parseAudio(
+            audio: Data,
+            selectedNeuralModelId: String,
+            examinationTypeId: String,
+        ) async throws -> USAudioParseResponse {
+            try await faults.check(
+                "ultrasoundReportRepository.parseAudio",
+            )
+            return try await wrapped.parseAudio(
+                audio: audio,
+                selectedNeuralModelId: selectedNeuralModelId,
+                examinationTypeId: examinationTypeId,
+            )
+        }
+
+        func parseTranscript(
+            selectedNeuralModelId: String,
             examinationTypeId: String,
             transcript: String,
         ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
             try await faults.check(
-                "ultrasoundReportRepository.parseDictation",
+                "ultrasoundReportRepository.parseTranscript",
             )
-            return try await wrapped.parseDictation(
+            return try await wrapped.parseTranscript(
                 selectedNeuralModelId: selectedNeuralModelId,
                 examinationTypeId: examinationTypeId,
                 transcript: transcript,

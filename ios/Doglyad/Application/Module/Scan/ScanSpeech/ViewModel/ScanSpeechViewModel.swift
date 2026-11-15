@@ -15,6 +15,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     private let messager: DMessager
     private let arguments: ScanSpeechArguments
     private var speechCancellable: AnyCancellable?
+    private var audioParseResponse: USAudioParseResponse?
 
     init(
         container: DependencyContainer,
@@ -135,11 +136,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private var isFoundationModels: Bool {
+        guard settingsAI.transcriberType != .tOne else {
+            return false
+        }
         switch settingsAI.transcriptParserType {
         case .foundationModels:
-            true
+            return true
         case .server:
-            false
+            return false
         }
     }
 
@@ -176,6 +180,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 locale: self.container.language.currentLocale,
                 contextualStrings: self.arguments.examinationType.contextualStrings,
                 lexiconLocalization: self.l10n.voice.speech,
+                transcribeAudio: { [weak self] audio in
+                    guard let self else {
+                        throw CancellationError()
+                    }
+                    return try await parseAudio(
+                        audio,
+                    )
+                },
             )
         } onMainSuccess: { controller in
             guard !Task.isCancelled else {
@@ -231,6 +243,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
         switch state {
         case _ as ScanSpeechReadyState:
+            audioParseResponse = nil
             analytics.buttonTapped(
                 .speechToggle,
                 parameters: .speechToggle(
@@ -256,13 +269,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     func onTapRecordAgain() {
         switch state {
-        case _ as ScanSpeechReviewTranscriptState: break
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechTranscriptionErrorState: break
         default: return
         }
 
         guard let speechController else {
             return
         }
+        audioParseResponse = nil
         speechController.start()
         switch speechController.recordingStatus {
         case .preparing, .recording, .transcribing:
@@ -274,6 +288,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             )
             refreshSpeechState()
         case .stopped: break
+        }
+    }
+
+    func onTapRetryTranscription() {
+        switch state {
+        case _ as ScanSpeechTranscriptionErrorState:
+            stopSpeech()
+        default: break
         }
     }
 
@@ -505,6 +527,24 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         speechCancellable?.cancel()
         speechCancellable = nil
         speechController?.cancel()
+        audioParseResponse = nil
+    }
+
+    func parseAudio(
+        _ audio: Data,
+    ) async throws -> String {
+        try Task.checkCancellation()
+        guard let selectedNeuralModelId = settingsAI.selectedNeuralModelId else {
+            throw DNeuralModelError.unavailable
+        }
+        let response = try await container.ultrasoundReportRepository.parseAudio(
+            audio: audio,
+            selectedNeuralModelId: selectedNeuralModelId,
+            examinationTypeId: arguments.examinationType.id,
+        )
+        try Task.checkCancellation()
+        audioParseResponse = response
+        return response.transcript
     }
 
     private func observeSpeechController() {
@@ -529,7 +569,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
         switch state {
         case let transcription as ScanSpeechTranscriptionLoadingState where transcription.parsedText != nil: return
-        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
+        case _ as ScanSpeechTranscriptionErrorState, _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
         default: break
         }
 
@@ -585,7 +625,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             }
             switch state {
             case let transcription as ScanSpeechTranscriptionLoadingState where transcription.parsedText != nil: return
-            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
+            case _ as ScanSpeechTranscriptionErrorState, _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
             default: break
             }
             guard let transcript else {
@@ -605,6 +645,21 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     ) {
         switch original.completion {
         case .failed:
+            if speechController?.isTranscriptionRetryAvailable == true {
+                emit(
+                    ScanSpeechTranscriptionErrorState(),
+                )
+                messager.show(
+                    type: .error,
+                    title: l10n[
+                        .errorUnknownTitle,
+                    ],
+                    description: l10n[
+                        .scanSpeechTranscriptionFailedDescription,
+                    ],
+                )
+                return
+            }
             messager.showUnknownError(
                 l10n: l10n,
             )
@@ -661,7 +716,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             localization: l10n.voice.dictation,
         )
         let started = Date()
+        let audioResponse = originalTranscript.engine == .tOne && audioParseResponse?.transcript == parsedText ? audioParseResponse : nil
         handle {
+            if let audioResponse {
+                return try DNeuralUltrasoundModelServer.process(
+                    response: audioResponse.result,
+                    request: request,
+                )
+            }
             let model = try factory.model(
                 isFoundationModels: self.isFoundationModels,
             )

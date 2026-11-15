@@ -19,7 +19,7 @@
 
         var body: some View {
             let (isErrorPresented, automaticFieldIds): (Bool, Set<DNeuralUltrasoundVoiceFieldId>) = switch state {
-            case _ as ScanSpeechModelPreparationErrorState: (true, [])
+            case _ as ScanSpeechModelPreparationErrorState, _ as ScanSpeechTranscriptionErrorState: (true, [])
             case let proposal as ScanSpeechReviewProposalState:
                 (false, Set(
                     proposal.proposal.proposals.map(

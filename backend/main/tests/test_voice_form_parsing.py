@@ -15,7 +15,7 @@ from app.core.localization.language_code import LanguageCode
 from app.error import ApiError
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
-from app.service.dictation.dictation_parsing_service import DictationParsingService
+from app.service.dictation.transcript_parsing_service import TranscriptParsingService
 from app.service.dictation.voice_form_validator import VoiceFormValidator
 from tests.support.voice_form_parsing.fake_neural_model_service import FakeNeuralModelService
 from tests.support.voice_form_parsing.voice_source_localization_test_support import (
@@ -517,7 +517,7 @@ def test_selected_report_model_is_used_for_server_parsing(
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/parse_dictation",
+            "path": "/v1/ultrasound/parse_transcript",
             "headers": [],
             "app": SimpleNamespace(
                 state=SimpleNamespace(
@@ -527,7 +527,7 @@ def test_selected_report_model_is_used_for_server_parsing(
             "state": {"request_id": "e" * 32},
         },
     )
-    handler: Any = DictationParsingService(
+    handler: Any = TranscriptParsingService(
         configuration,
         request.app.state.model_service,
     ).parse
@@ -572,7 +572,7 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/parse_dictation",
+            "path": "/v1/ultrasound/parse_transcript",
             "headers": [
                 (b"accept-language", language.encode()),
                 (b"x-firebase-appcheck", b"token"),
@@ -586,10 +586,11 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(
         },
     )
     body = USVoiceFormParseRequest(
+        selectedNeuralModelId="google/medgemma-4b-it",
         usExaminationTypeId="echocardiography",
         transcript=transcript,
     )
-    handler: Any = DictationParsingService(
+    handler: Any = TranscriptParsingService(
         configuration,
         request.app.state.model_service,
     ).parse
@@ -661,7 +662,7 @@ def test_route_rejects_unknown_examination_type(
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/parse_dictation",
+            "path": "/v1/ultrasound/parse_transcript",
             "headers": [],
             "app": SimpleNamespace(
                 state=SimpleNamespace(
@@ -673,7 +674,7 @@ def test_route_rejects_unknown_examination_type(
             "state": {"request_id": "c" * 32},
         },
     )
-    handler: Any = DictationParsingService(
+    handler: Any = TranscriptParsingService(
         configuration,
         request.app.state.model_service,
     ).parse
@@ -683,6 +684,7 @@ def test_route_rejects_unknown_examination_type(
         asyncio.run(
             handler(
                 body=USVoiceFormParseRequest(
+                    selectedNeuralModelId="google/medgemma-4b-it",
                     usExaminationTypeId="unknown",
                     transcript="hello",
                 ),

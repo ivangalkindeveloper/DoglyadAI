@@ -4,7 +4,7 @@
 
 The backend is split into two independently deployable services: `backend/main` and `backend/inference`.
 
-- **Main backend** (`backend/main/`) — Python, FastAPI, Docker. Runs on a **non-GPU VM** and never performs inference itself: it builds the prompt, selects the model, and routes the request. It also sends reports by email through SMTP.
+- **Main backend** (`backend/main/`) — Python, FastAPI, Docker. Runs on a **non-GPU VM** and runs T-one audio recognition in a dedicated CPU process. For LLM generation it builds the prompt, selects the model, and routes the request. It also sends reports by email through SMTP.
 - **Inference service** (`backend/inference/`) — Python, FastAPI, Docker. Runs once per GPU host beside one or more local vLLM engines. It validates App Check, selects the configured engine by `modelId`, and performs model-agnostic structured generation. Existing single-model VMs remain supported; DGX Spark uses one backend and the vLLM engines declared in its versioned host profile.
 - **iOS application** — SwiftUI, MVVM, SwiftData, Alamofire, Apple Foundation Models for on-device inference, Firebase, StoreKit 2, and backend-owned subscriptions.
 
@@ -22,7 +22,7 @@ The app saves its examination locally before starting the job. Main encrypts the
 persisted request and snapshots; the source request/token is cleared on completion.
 Jobs expire after the configured retention period (currently 12 hours). Client
 history remains local. The API and all workers share `ApplicationDatabase` and the
-same environment keys; the main VM does not run model inference. See
+same environment keys; the main VM runs only CPU speech recognition, not LLM generation. See
 [`REPORT_STREAMING.md`](../../backend/main/REPORT_STREAMING.md).
 
 App Check is validated **twice**: at the system entry point (`backend/main`) and again on the model machine (`backend/inference`). The `X-Firebase-AppCheck` header is forwarded unchanged, so both services validate the same token.
@@ -127,7 +127,8 @@ reporting requirements are tracked separately from environment selection. See
 | `backend/main/app/route/ultrasound/report_generations/` | Protected, owner-scoped report jobs: start with `POST`, read a snapshot or SSE events with `GET`, and cancel with `POST`. A background worker generates and validates reports. |
 | `backend/main/app/model/ultrasound/us_examination_model_report_response.py` | `USExaminationModelReportResponse`: generated report response with model ID, generation date, optional description remarks, and photo remark points; `USExaminationReport` remains the internal structured report model |
 | `backend/main/app/schema/us_examination_report_structured_output.py`, `backend/main/app/service/report/report_validator.py` | Request-dependent report schema with localized remark descriptions, photo IDs and normalized coordinates; validates generated remarks against the request |
-| `backend/main/app/route/ultrasound/parse_dictation.py` | Protected, rate-limited `POST /v1/ultrasound/parse_dictation`: builds a voice parsing prompt, calls the ready `NeuralModelService`, validates generated fields against the transcript, and returns `USVoiceFormParseResponse` |
+| `backend/main/app/route/ultrasound/parse_audio.py` | App Check and subscription-protected PCM upload. T-one executes on main CPU, then main sends the transcript to inference and returns transcript plus parsed fields in one response. See `backend/main/SPEECH.md`. |
+| `backend/main/app/route/ultrasound/parse_transcript.py` | Protected, rate-limited `POST /v1/ultrasound/parse_transcript`: builds a voice parsing prompt, calls the ready `NeuralModelService`, validates generated fields against the transcript, and returns `USVoiceFormParseResponse` |
 | `backend/main/app/route/templates/ready_made_list.py` | Protected, rate-limited `GET /v1/templates/ready_made_list`: returns localized `USExaminationReadyMadeTemplateResponse` values |
 | `backend/main/app/route/email/send_report_email.py` | `POST /v1/send_report_email`: sends any report through SMTP (`smtplib`) |
 | `backend/main/app/route/localization/l10n.py` | Independent App Check protected `/v1/l10n` router; returns one locale with application strings and voice parsing rules. |

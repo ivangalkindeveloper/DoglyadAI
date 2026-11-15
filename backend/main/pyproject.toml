@@ -40,6 +40,11 @@ show_error_codes = true
 module = ["firebase_admin.*", "regex"]
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = ["tone.*", "onnxruntime.*", "numpy.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
 [tool.pydantic-mypy]
 init_forbid_extra = true
 init_typed = true

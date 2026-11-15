@@ -116,7 +116,7 @@ class BackendEvidenceTests(unittest.TestCase):
             verify_requests(
                 [
                     dict(
-                        method="POST", path="/v1/ultrasound/parse_dictation", status=499
+                        method="POST", path="/v1/ultrasound/parse_transcript", status=499
                     )
                 ],
                 expected,
@@ -126,7 +126,7 @@ class BackendEvidenceTests(unittest.TestCase):
     def test_edited_dictation_requires_its_exact_protected_request(self):
         event = dict(
             method="POST",
-            path="/v1/ultrasound/parse_dictation",
+            path="/v1/ultrasound/parse_transcript",
             status=200,
             request=dict(transcript="Edited transcript"),
         )

@@ -15,6 +15,11 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     var isRecentTypesWriteFailed = false
     var isReportCountReadFailed = false
     var onRecentTypeRecord: (() async throws -> Void)?
+    var audioParseResponse: USAudioParseResponse?
+    private(set) var audioParseCount = 0
+    private(set) var transcriptParseCount = 0
+    private(set) var audioModelId: String?
+    private(set) var transcriptModelId: String?
     var isServerGenerating = false
     var eventContinuation: AsyncThrowingStream<DServerEvent, Error>.Continuation?
     private(set) var generationCount = 0
@@ -235,11 +240,31 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
         reports.removeAll()
     }
 
-    func parseDictation(
-        selectedNeuralModelId _: String?,
+    func parseAudio(
+        audio _: Data,
+        selectedNeuralModelId: String,
+        examinationTypeId _: String,
+    ) async throws -> USAudioParseResponse {
+        audioParseCount += 1
+        audioModelId = selectedNeuralModelId
+        if let audioParseResponse {
+            return audioParseResponse
+        }
+        throw URLError(
+            .unsupportedURL,
+        )
+    }
+
+    func parseTranscript(
+        selectedNeuralModelId: String,
         examinationTypeId _: String,
         transcript _: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
+        transcriptParseCount += 1
+        transcriptModelId = selectedNeuralModelId
+        if let audioParseResponse {
+            return audioParseResponse.result
+        }
         throw CocoaError(
             .coderInvalidValue,
         )

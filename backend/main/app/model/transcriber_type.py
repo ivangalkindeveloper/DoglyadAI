@@ -7,3 +7,4 @@ class TranscriberType(StrEnum):
     SF_SPEECH_RECOGNIZER = "sfSpeechRecognizer"
     SPEECH_ANALYZER = "speechAnalyzer"
     WHISPER_KIT = "whisperKit"
+    T_ONE = "tOne"

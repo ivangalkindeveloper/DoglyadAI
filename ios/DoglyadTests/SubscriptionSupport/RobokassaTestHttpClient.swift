@@ -21,6 +21,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func get<Response: Decodable>(
         url _: URL,
+        queryParameters _: [String: String]?,
     ) async throws -> Response {
         throw URLError(
             .unsupportedURL,
@@ -29,6 +30,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func get<Response: Decodable>(
         endPoint: String,
+        queryParameters _: [String: String]?,
         headers _: [String: String]?,
     ) async throws -> Response {
         requests.append(
@@ -49,6 +51,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func get<Response: Decodable>(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         body _: (some Encodable & Sendable)?,
         headers _: [String: String]?,
     ) async throws -> Response {
@@ -59,6 +62,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func post<Response: Decodable>(
         endPoint: String,
+        queryParameters _: [String: String]?,
         body: (some Encodable & Sendable)?,
         headers _: [String: String]?,
         encoderUserInfo _: [CodingUserInfoKey: Any]?,
@@ -92,6 +96,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func post(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         body _: (some Encodable & Sendable)?,
         headers _: [String: String]?,
         encoderUserInfo _: [CodingUserInfoKey: Any]?,
@@ -103,6 +108,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func post<Response: Decodable>(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         data _: Data?,
         headers _: [String: String]?,
     ) async throws -> Response {
@@ -113,6 +119,7 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
 
     func serverEvents(
         endPoint _: String,
+        queryParameters _: [String: String]?,
         headers _: [String: String]?,
     ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
         throw URLError(

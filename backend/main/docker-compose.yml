@@ -19,6 +19,7 @@ services:
       # They contain no patient data — only technical metadata.
       LOG_DIR: /app/logs
       LOG_RETENTION_DAYS: 365
+      T_ONE_MODEL_PATH: /app/models/t_one
     # Comes back by itself after a crash and after the VM reboots — otherwise the
     # backend stays down until someone notices and ssh-es in.
     restart: unless-stopped

@@ -87,5 +87,5 @@ Use the following pattern catalog when evaluating a design. Apply relevant patte
 - Use only `DoglyadNetwork` resources for application-owned HTTP requests. Network exchange performed internally by an SDK, including StoreKit, WKWebView, the system payment browser and model download SDKs, may remain in the corresponding framework adapter. Do not move ordinary application HTTP into an adapter to bypass `DoglyadNetwork`.
 - Use only `DoglyadDatabase` resources for client persistence.
 - Do not modify `ios/DoglyadNeuralModel/Resources/`, `ios/Config/`, `ios/Firebase/`, `backend/main/secrets/`, or `backend/inference/secrets/`. For local iOS preparation, `make init-ios-local` may update only `BASE_URL` in `ios/Config/Config.Local.xcconfig`.
-- The main backend does not run inference and lives on a non-GPU VM. All model execution belongs in `backend/inference/`.
+- The main backend lives on a non-GPU VM. It runs T-one speech recognition in a dedicated CPU process with a bounded queue. LLM generation and transcript parsing models run only in `backend/inference/`.
 - Prompts, application localization, and templates live in the main backend, with only the explicitly listed bootstrap and iOS system localization exceptions on the client. The inference service receives final text and only performs generation.

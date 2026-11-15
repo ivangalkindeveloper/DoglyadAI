@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-scanspeech-e77f12779d
+tags:
+- atlas
+- ScanSpeech
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-scanspeech-e77f12779d
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-scanspeech-e77f12779d
+    timeout: 15000
+- takeScreenshot: 10-ScanSpeech-e77f12779d

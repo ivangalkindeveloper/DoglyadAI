@@ -171,7 +171,7 @@ ENVIRONMENT=development PYTHONPATH=backend/main:. .venv311/bin/python \
 
 ```bash
 .venv311/bin/python -m evaluation.voice.audio.end_to_end
-TEST_RUNNER_VOICE_END_TO_END_RUN=1 TEST_RUNNER_VOICE_REPORT_ID=audio-run \
+TEST_RUNNER_VOICE_END_TO_END_RUN=1 TEST_RUNNER_VOICE_END_TO_END_MODEL_ID=google/medgemma-4b-it TEST_RUNNER_VOICE_REPORT_ID=audio-run \
 xcodebuild -quiet test -project ios/Doglyad.xcodeproj \
   -scheme Doglyad-Debug-Development -configuration Release-Development \
   -destination 'platform=iOS,id=<UDID>' \
@@ -880,12 +880,12 @@ python3 -m evaluation.voice.runners.run_ios --candidate --mode extended --varian
 
 ## Эксперимент с серверным разбором текста
 
-`POST /v1/ultrasound/parse_dictation` получает тип исследования и финальный
+`POST /v1/ultrasound/parse_transcript` получает тип исследования и финальный
 транскрипт. `backend/main` строит локализованный промпт и проверяет ответ;
 `backend/inference` использует действующий `/v1/generation`. Аудио в этом
 эксперименте не передаётся на сервер. `selectedNeuralModelId` выбирает ту же
-модель, что используется для генерации протоколов; без явного ID используется
-модель по умолчанию. Серверный `config/<environment>/server.json` задаёт лимит токенов разбора в `voice_form_parsing.maxTokens` и остальные параметры обработки запросов.
+модель, что используется для генерации протоколов. ID обязателен; запрос
+без ID получает 422. Серверный `config/<environment>/server.json` задаёт лимит токенов разбора в `voice_form_parsing.maxTokens` и остальные параметры обработки запросов.
 
 Для сравнения с прямым разбором готовой пунктуированной строки один запуск
 обрабатывает все три набора (по 62 случая на EN и RU). Вход `ideal-text` —
@@ -912,6 +912,7 @@ python3 -m evaluation.voice.runners.run_server_benchmark \
 
 ```bash
 python3 -m evaluation.voice.runners.server_parse \
+  --model-id google/medgemma-4b-it \
   --corpus build/voice-eval/text/regression.jsonl \
   --asr-report build/voice-eval/ios-candidate-device-asr-only-guided-format-clean/asr-replay-speechAnalyzer-hints-true-report.json \
   --output build/voice-eval/server/guided-clean-retry3.json \

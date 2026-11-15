@@ -20,4 +20,4 @@ tags:
       id: preview.scrollEnd.ready
     timeout: 30000
 - waitForAnimationToEnd
-- takeScreenshot: 04-SettingsAI-9e6402ea61
+- takeScreenshot: 06-SettingsAI-9e6402ea61

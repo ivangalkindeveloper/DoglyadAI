@@ -22,7 +22,7 @@ logger = logging.getLogger(
 )
 
 
-class DictationParsingService:
+class TranscriptParsingService:
     def __init__(
         self,
         configuration: Configuration,
@@ -72,7 +72,7 @@ class DictationParsingService:
 
         response_text = await self._model_service.call(
             NeuralModelServiceRequest(
-                operation=NeuralModelServiceOperation.PARSE_DICTATION,
+                operation=NeuralModelServiceOperation.PARSE_TRANSCRIPT,
                 language_code=language,
                 model_id=model.id,
                 system_prompt=prompt_factory.voice_system_prompt(),

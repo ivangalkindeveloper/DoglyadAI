@@ -233,7 +233,7 @@ final class DependencyContainer: ObservableObject {
                         maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
                         maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
                     ),
-                    parseDictation: ultrasoundReportRepository.parseDictation,
+                    parseTranscript: ultrasoundReportRepository.parseTranscript,
                 ),
                 usExaminationTypeGroups: usExaminationTypeGroups,
                 usExaminationTypesById: usExaminationTypesById,

@@ -157,9 +157,12 @@ async def run(
     output_path: Path,
     base_url: str,
     token_file: Path,
+    model_id: str,
     limit: int | None = None,
     max_attempts: int = 3,
 ) -> dict[str, Any]:
+    if not model_id.strip():
+        raise ValueError("model_id must not be blank")
     if max_attempts < 1:
         raise ValueError("max_attempts must be positive")
     cases = load_cases(corpus_path, asr_report_path, audio_manifest_path)
@@ -170,6 +173,7 @@ async def run(
     manifest_hash = file_sha256(audio_manifest_path) if audio_manifest_path else None
     report: dict[str, Any] = {
         "schemaVersion": 2,
+        "selectedNeuralModelId": model_id,
         "corpusSha256": corpus_hash,
         "asrReportSha256": asr_hash,
         "audioManifestSha256": manifest_hash,
@@ -180,9 +184,9 @@ async def run(
         previous = json.loads(output_path.read_text(encoding="utf-8"))
         if any(
             previous.get(key) != report[key]
-            for key in ("schemaVersion", "corpusSha256", "asrReportSha256", "audioManifestSha256")
+            for key in ("schemaVersion", "selectedNeuralModelId", "corpusSha256", "asrReportSha256", "audioManifestSha256")
         ):
-            raise ValueError("Existing output belongs to another corpus or ASR report")
+            raise ValueError("Existing output belongs to another model, corpus or ASR report")
         report["results"] = previous["results"]
     completed = {row["id"] for row in report["results"]}
     if len(completed) != len(report["results"]):
@@ -211,9 +215,10 @@ async def run(
                     attempt_result: dict[str, Any] = {"number": attempt + 1}
                     try:
                         response = await client.post(
-                            f"{base_url.rstrip('/')}/v1/ultrasound/parse_dictation",
+                            f"{base_url.rstrip('/')}/v1/ultrasound/parse_transcript",
                             headers={"X-Firebase-AppCheck": token, "Accept-Language": case["locale"]},
                             json={
+                                "selectedNeuralModelId": model_id,
                                 "usExaminationTypeId": case["examinationTypeId"],
                                 "transcript": case["inputText"],
                             },
@@ -262,6 +267,7 @@ def main() -> None:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--token-file", required=True, type=Path)
+    parser.add_argument("--model-id", required=True)
     parser.add_argument("--limit", type=int)
     parser.add_argument("--max-attempts", type=int, default=3)
     args = parser.parse_args()
@@ -273,6 +279,7 @@ def main() -> None:
             output_path=args.output,
             base_url=args.base_url,
             token_file=args.token_file,
+            model_id=args.model_id,
             limit=args.limit,
             max_attempts=args.max_attempts,
         )

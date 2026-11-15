@@ -5,8 +5,8 @@ import Foundation
 struct DNeuralUltrasoundUnavailableTestTransport {
     init() {}
 
-    func parseDictation(
-        selectedNeuralModelId _: String?,
+    func parseTranscript(
+        selectedNeuralModelId _: String,
         examinationTypeId _: String,
         transcript _: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {

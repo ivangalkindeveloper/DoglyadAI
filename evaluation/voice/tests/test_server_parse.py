@@ -227,6 +227,7 @@ def test_server_retry_records_each_attempt(
             output_path=tmp_path / "result.json",
             base_url="https://example.test",
             token_file=token_file,
+            model_id="test/model",
         )
     )
 
@@ -277,6 +278,7 @@ def test_authentication_failure_stops_run_without_scoring(tmp_path: Path, monkey
                 output_path=tmp_path / "result.json",
                 base_url="https://example.test",
                 token_file=token_file,
+                model_id="test/model",
             )
         )
     assert not (tmp_path / "result.json").exists()

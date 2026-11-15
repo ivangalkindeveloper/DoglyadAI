@@ -31,9 +31,13 @@ from app.error import (
 )
 from app.model.api_error_response import ApiErrorResponse
 
-_PATH = "/v1/ultrasound/parse_dictation"
-_BODY = {"usExaminationTypeId": "bladder", "transcript": "Synthetic findings"}
-_VALIDATION_PATH = "/v1/ultrasound/parse_dictation"
+_PATH = "/v1/ultrasound/parse_transcript"
+_BODY = {
+    "selectedNeuralModelId": "google/medgemma-4b-it",
+    "usExaminationTypeId": "bladder",
+    "transcript": "Synthetic findings",
+}
+_VALIDATION_PATH = "/v1/ultrasound/parse_transcript"
 _FIELD = "transcript"
 
 
@@ -47,7 +51,7 @@ def _install_failure(
         ),
     )
     app.dependency_overrides[AppCheck.verify] = lambda: None
-    app.dependency_overrides[ServiceDependencies.dictation_parsing] = lambda: service
+    app.dependency_overrides[ServiceDependencies.transcript_parsing] = lambda: service
 
 
 @pytest.mark.parametrize(

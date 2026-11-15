@@ -21,7 +21,7 @@
       "requests_per_minute": 30,
       "max_body_bytes": 65536
     },
-    "/v1/ultrasound/parse_dictation": {
+    "/v1/ultrasound/parse_transcript": {
       "requests_per_minute": 30,
       "max_body_bytes": 262144
     },
@@ -92,6 +92,10 @@
     "/v1/subscriptions/auto_renewal": {
       "requests_per_minute": 30,
       "max_body_bytes": 65536
+    },
+    "/v1/ultrasound/parse_audio": {
+      "requests_per_minute": 10,
+      "max_body_bytes": 4800000
     }
   },
   "inference": {
@@ -136,5 +140,11 @@
     "max_pending_per_owner": 2,
     "max_response_bytes": 4194304,
     "repetition_penalty": 1.05
+  },
+  "speech": {
+    "cpu_threads": 4,
+    "max_waiting_requests": 2,
+    "queue_timeout_seconds": 10,
+    "operation_timeout_seconds": 120
   }
 }

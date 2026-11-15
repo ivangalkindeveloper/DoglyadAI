@@ -21,7 +21,7 @@ def verify_requests(events: list[dict], expected: dict, project: str) -> dict:
             item
             for item in events
             if item["method"] == "POST"
-            and item["path"] == "/v1/ultrasound/parse_dictation"
+            and item["path"] == "/v1/ultrasound/parse_transcript"
         ]
         matches = [
             item
@@ -58,7 +58,7 @@ def verify_requests(events: list[dict], expected: dict, project: str) -> dict:
             raise ValueError("Restricted or canceled flow attempted SMTP delivery")
         if expected.get("dictationAbsent") and any(
             event["method"] == "POST"
-            and event["path"] == "/v1/ultrasound/parse_dictation"
+            and event["path"] == "/v1/ultrasound/parse_transcript"
             for event in events
         ):
             raise ValueError("Cancelled speech flow still sent a parsing request")

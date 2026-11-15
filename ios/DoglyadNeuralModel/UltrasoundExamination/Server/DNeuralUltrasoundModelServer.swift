@@ -1,12 +1,12 @@
 import Foundation
 
 public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol {
-    private let parseDictation: (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
+    private let parseTranscript: (String, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
 
     public init(
-        parseDictation: @escaping (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
+        parseTranscript: @escaping (String, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
     ) {
-        self.parseDictation = parseDictation
+        self.parseTranscript = parseTranscript
     }
 
     /// The remote engine is managed by the backend; preparing it sends no request.
@@ -16,13 +16,27 @@ public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol 
         request: DNeuralUltrasoundDictationParseRequest,
     ) async throws -> DNeuralUltrasoundDictationProposal {
         try Task.checkCancellation()
-        let response = try await parseDictation(
-            request.selectedNeuralModelId,
+        guard let selectedNeuralModelId = request.selectedNeuralModelId else {
+            throw DNeuralModelError.unavailable
+        }
+        let response = try await parseTranscript(
+            selectedNeuralModelId,
             request.examinationTypeId,
             request.text,
         )
         try Task.checkCancellation()
-        return try DNeuralUltrasoundProposalProcessor(
+        return try Self.process(
+            response: response,
+            request: request,
+        )
+    }
+
+    /// Validates an already generated response without another model request.
+    public static func process(
+        response: DNeuralUltrasoundVoiceFormParseResponseDTO,
+        request: DNeuralUltrasoundDictationParseRequest,
+    ) throws -> DNeuralUltrasoundDictationProposal {
+        try DNeuralUltrasoundProposalProcessor(
             request: request,
         ).process(
             generated: DNeuralUltrasoundProposalGenerationResponse(

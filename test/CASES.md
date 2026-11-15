@@ -4,7 +4,7 @@
 
 Список создаёт `python3 test/scripts/catalog.py`. Это перечень проверок, а не результат запуска.
 
-Платформа: iOS. Модулей: 43. Функциональных кейсов с вводным сценарием: 116. Кейсов отображения: 239.
+Платформа: iOS. Модулей: 43. Функциональных кейсов с вводным сценарием: 117. Кейсов отображения: 242.
 
 ## Функциональные сценарии
 
@@ -60,6 +60,7 @@
 | [e2e-worksettings-invalid-email](modules/WorkSettings/e2e/invalid-email.yaml) | Неверная почта не заменяет сохранённую | 1 |
 | [e2e-worksettings-save-failure](modules/WorkSettings/e2e/save-failure.yaml) | Отмена правки почты, ошибка записи и повтор | 2 |
 | [e2e-settingsai-ai-settings](modules/SettingsAI/e2e/ai-settings.yaml) | Открыть настройки и выбор транскрибатора | 2 |
+| [e2e-settingsai-tone](modules/SettingsAI/e2e/tone.yaml) | Выбрать T-one и сохранить серверный распознаватель | 1 |
 | [e2e-settingsai-providers](modules/SettingsAI/e2e/providers.yaml) | Выбрать WhisperKit и серверный парсер и сохранить | 1 |
 | [e2e-settingsai-parameters-0-1](modules/SettingsAI/e2e/parameters-0-1.yaml) | Сохранить температуру 0 и 1 токенов | 1 |
 | [e2e-settingsai-parameters-0_7-1024](modules/SettingsAI/e2e/parameters-0_7-1024.yaml) | Сохранить температуру 0.7 и 1024 токенов | 1 |
@@ -244,8 +245,10 @@
 | WorkSettings | [06 WorkSettingsErrorState PreferencesSaveFailed ScrollEnd](modules/WorkSettings/atlas/atlas-worksettings-ebdef23f53.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
 | SettingsAI | [01 SettingsAIInitialState CurrentPreferences](modules/SettingsAI/atlas/atlas-settingsai-f46a59b1b3.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
 | SettingsAI | [02 SettingsAIInitialState CurrentPreferences ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-b7209852fc.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SettingsAI | [03 SettingsAIErrorState PreferencesSaveFailed](modules/SettingsAI/atlas/atlas-settingsai-e993ef39f9.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SettingsAI | [04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-9e6402ea61.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [03 SettingsAIInitialState TOneServerParsing](modules/SettingsAI/atlas/atlas-settingsai-aa8b7e93cd.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [04 SettingsAIInitialState TOneServerParsing ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-5d2ba624c2.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [05 SettingsAIErrorState PreferencesSaveFailed](modules/SettingsAI/atlas/atlas-settingsai-e993ef39f9.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [06 SettingsAIErrorState PreferencesSaveFailed ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-9e6402ea61.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
 | SelectTranscriber | [01 SelectTranscriberInitialState AvailableTranscribers](modules/SelectTranscriber/atlas/atlas-selecttranscriber-af860819bc.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
 | SelectTranscriber | [02 SelectTranscriberInitialState AvailableTranscribers ScrollEnd](modules/SelectTranscriber/atlas/atlas-selecttranscriber-f305449c4b.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
 | SelectTranscriptParser | [01 SelectTranscriptParserDefaultState AvailableParsers](modules/SelectTranscriptParser/atlas/atlas-selecttranscriptparser-6a2d3a4672.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriptParser/Preview/SelectTranscriptParserPreview.swift) |
@@ -326,14 +329,15 @@
 | ScanSpeech | [07 ScanSpeechRecordingPreparationLoadingState PreparingRecording](modules/ScanSpeech/atlas/atlas-scanspeech-afd5c37eab.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [08 ScanSpeechRecordingState RecordingSpeech](modules/ScanSpeech/atlas/atlas-scanspeech-3a8fdfca87.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [09 ScanSpeechTranscriptionLoadingState TranscribingSpeech](modules/ScanSpeech/atlas/atlas-scanspeech-ab81375794.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [10 ScanSpeechReviewTranscriptState TranscriptReview](modules/ScanSpeech/atlas/atlas-scanspeech-e014a6519e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [11 ScanSpeechReviewTranscriptState TranscriptReview ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9bedcb0d75.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [12 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript](modules/ScanSpeech/atlas/atlas-scanspeech-d10bd1f816.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9e9a530152.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [14 ScanSpeechReviewProposalState MultipleFields](modules/ScanSpeech/atlas/atlas-scanspeech-0b84d79e8e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [15 ScanSpeechReviewProposalState MultipleFields ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-65a5940d07.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [16 ScanSpeechReviewProposalState PatientNotPrepared](modules/ScanSpeech/atlas/atlas-scanspeech-44c2bb22b0.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [17 ScanSpeechReviewProposalState PatientNotPrepared ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-7a299652b1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [10 ScanSpeechTranscriptionErrorState RecordingRetained](modules/ScanSpeech/atlas/atlas-scanspeech-e77f12779d.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [11 ScanSpeechReviewTranscriptState TranscriptReview](modules/ScanSpeech/atlas/atlas-scanspeech-e014a6519e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [12 ScanSpeechReviewTranscriptState TranscriptReview ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9bedcb0d75.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript](modules/ScanSpeech/atlas/atlas-scanspeech-d10bd1f816.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [14 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9e9a530152.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [15 ScanSpeechReviewProposalState MultipleFields](modules/ScanSpeech/atlas/atlas-scanspeech-0b84d79e8e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [16 ScanSpeechReviewProposalState MultipleFields ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-65a5940d07.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [17 ScanSpeechReviewProposalState PatientNotPrepared](modules/ScanSpeech/atlas/atlas-scanspeech-44c2bb22b0.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [18 ScanSpeechReviewProposalState PatientNotPrepared ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-7a299652b1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | PatientConsent | [01 PatientConsentInitialState RequestConsent](modules/PatientConsent/atlas/atlas-patientconsent-65ab0d7fc4.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
 | PatientConsent | [02 PatientConsentInitialState DoNotAskAgainSelected](modules/PatientConsent/atlas/atlas-patientconsent-1e3a9361b8.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
 | PatientConsent | [03 PatientConsentInitialState PreferenceSaveFailed](modules/PatientConsent/atlas/atlas-patientconsent-578517b21f.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |

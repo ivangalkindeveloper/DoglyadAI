@@ -7,7 +7,7 @@ tags: [e2e, ScanSpeech]
     arguments:
       regressionPreview: ''
       regressionSpeech: review
-      regressionFault: ultrasoundReportRepository.parseDictation
+      regressionFault: ultrasoundReportRepository.parseTranscript
       regressionFaultAfter: '0'
 - extendedWaitUntil:
     visible: {id: scan.speech}

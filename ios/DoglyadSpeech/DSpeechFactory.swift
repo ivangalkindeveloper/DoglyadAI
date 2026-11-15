@@ -24,8 +24,17 @@ public enum DSpeechFactory {
         locale: Locale,
         contextualStrings: [String],
         lexiconLocalization: DSpeechLexiconLocalization,
+        transcribeAudio: (@MainActor (Data) async throws -> String)? = nil,
     ) async throws -> any DSpeechControllerProtocol {
         switch engine {
+        case .tOne:
+            guard locale.language.languageCode?.identifier == "ru", let transcribeAudio else {
+                throw DSpeechError.unavailable
+            }
+            return DSpeechControllerTOne(
+                locale: locale,
+                transcribe: transcribeAudio,
+            )
         case .whisperKit:
             return DSpeechControllerWhisperKit(
                 locale: locale,

@@ -20,6 +20,11 @@ struct ScanSpeechContentStateView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
+        case _ as ScanSpeechTranscriptionErrorState:
+            ScanSpeechTranscriptionErrorView(
+                toolbarHeight: toolbarHeight,
+                bottomHeight: bottomHeight,
+            )
         case _ as ScanSpeechModelLoadingState, _ as ScanSpeechModelPreparationErrorState:
             ScanSpeechModelPreparationView(
                 toolbarHeight: toolbarHeight,

@@ -20,7 +20,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         let result = try await factory.model(
@@ -62,7 +62,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         let result = try await factory.model(
@@ -110,7 +110,7 @@ struct DictationModelCompositionTests {
             ),
         )
         let server = try DNeuralUltrasoundModelServer(
-            parseDictation: TransportStub().parseDictation,
+            parseTranscript: TransportStub().parseTranscript,
         )
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
@@ -163,7 +163,7 @@ struct DictationModelCompositionTests {
         )
         let transport = try TransportStub()
         DNeuralUltrasoundModelServer(
-            parseDictation: transport.parseDictation,
+            parseTranscript: transport.parseTranscript,
         ).prewarm()
         #expect(
             transport.calls == 0,
@@ -185,7 +185,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         let result = try await factory.model(
@@ -247,7 +247,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         await #expect(
@@ -274,7 +274,7 @@ struct DictationModelCompositionTests {
         let transport = try TransportStub()
         transport.error = TestFailure.failed
         let model = DNeuralUltrasoundModelServer(
-            parseDictation: transport.parseDictation,
+            parseTranscript: transport.parseTranscript,
         )
         await #expect(
             throws: TestFailure.failed,
@@ -310,7 +310,7 @@ struct DictationModelCompositionTests {
         let transport = try TransportStub()
         transport.isCancellationBeforeReturnEnabled = true
         let server = DNeuralUltrasoundModelServer(
-            parseDictation: transport.parseDictation,
+            parseTranscript: transport.parseTranscript,
         )
         let serverTask = Task {
             try await server.parseProposals(
@@ -363,7 +363,7 @@ struct DictationModelCompositionTests {
             json: #"{"proposals":[]}"#,
         )
         let result = try await DNeuralUltrasoundModelServer(
-            parseDictation: transport.parseDictation,
+            parseTranscript: transport.parseTranscript,
         ).parseProposals(
             request: request(
                 text: "Вес: 68 кг. Описание исследования: Печень без особенностей. Нужно уточнить анамнез.",
@@ -403,7 +403,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         #expect(
@@ -436,7 +436,7 @@ struct DictationModelCompositionTests {
                 maxTokens: 512,
                 maxContextTokens: 4096,
             ),
-            parseDictation: transport.parseDictation,
+            parseTranscript: transport.parseTranscript,
         )
         #expect(
             try factory.model(
@@ -459,7 +459,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         let result = try await factory.model(
@@ -497,7 +497,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                parseDictation: transport.parseDictation,
+                parseTranscript: transport.parseTranscript,
             ),
         )
         #expect(
@@ -512,8 +512,30 @@ struct DictationModelCompositionTests {
         )
     }
 
+    @Test(
+        "Server parsing requires the selected model before transport",
+    )
+    func serverRejectsMissingModelBeforeTransport() async throws {
+        let transport = try TransportStub()
+        let model = DNeuralUltrasoundModelServer(
+            parseTranscript: transport.parseTranscript,
+        )
+        await #expect(
+            throws: DNeuralModelError.unavailable,
+        ) {
+            try await model.parseProposals(
+                request: request(
+                    selectedNeuralModelId: nil,
+                ),
+            )
+        }
+        #expect(
+            transport.calls == 0,
+        )
+    }
+
     private func request(
-        selectedNeuralModelId: String? = nil,
+        selectedNeuralModelId: String? = "test/model",
         text: String = "Пациент: Анна Петрова. Вес 68 кг.",
     ) -> DNeuralUltrasoundDictationParseRequest {
         let locale = Locale(
@@ -614,8 +636,8 @@ private final class TransportStub {
         )
     }
 
-    func parseDictation(
-        selectedNeuralModelId: String?,
+    func parseTranscript(
+        selectedNeuralModelId: String,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {

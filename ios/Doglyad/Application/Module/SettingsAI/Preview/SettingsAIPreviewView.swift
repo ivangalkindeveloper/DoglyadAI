@@ -9,11 +9,14 @@
         @EnvironmentObject private var router: DRouter
         @EnvironmentObject private var messager: DMessager
         let state: any SettingsAIStateProtocol
+        let transcriberType: TranscriberType?
 
         init(
             state: any SettingsAIStateProtocol,
+            transcriberType: TranscriberType? = nil,
         ) {
             self.state = state
+            self.transcriberType = transcriberType
         }
 
         var body: some View {
@@ -52,6 +55,10 @@
                 onNeuralModelSelected: { _ in },
                 onSettingsSaved: { _, _, _, _, _ in },
             )
+
+            if let transcriberType {
+                model.transcriberType = transcriberType
+            }
 
             model.preparePreview(
                 state: state,

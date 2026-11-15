@@ -3,20 +3,20 @@ import Foundation
 
 /// The device benchmark retries requests; the production transport keeps its existing policy.
 final class DNeuralUltrasoundRetryingTestTransport {
-    private let base: (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
+    private let base: (String, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
     private let isFoundationOnly: Bool
     private(set) var calls = 0
 
     init(
-        base: @escaping (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
+        base: @escaping (String, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
         isFoundationOnly: Bool,
     ) {
         self.base = base
         self.isFoundationOnly = isFoundationOnly
     }
 
-    func parseDictation(
-        selectedNeuralModelId: String?,
+    func parseTranscript(
+        selectedNeuralModelId: String,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {

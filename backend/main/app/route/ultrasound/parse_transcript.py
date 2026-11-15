@@ -11,7 +11,7 @@ from app.core.localization.language_code import LanguageCode
 from app.core.localization.localization_dependencies import LocalizationDependencies
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
-from app.service.dictation.dictation_parsing_service import DictationParsingService
+from app.service.dictation.transcript_parsing_service import TranscriptParsingService
 
 router = APIRouter(
     dependencies=[
@@ -23,16 +23,16 @@ router = APIRouter(
 
 
 @router.post(
-    "/parse_dictation",
+    "/parse_transcript",
     response_model=USVoiceFormParseResponse,
 )
-async def parse_dictation(
+async def parse_transcript(
     body: USVoiceFormParseRequest,
     request: Request,
     service: Annotated[
-        DictationParsingService,
+        TranscriptParsingService,
         Depends(
-            ServiceDependencies.dictation_parsing,
+            ServiceDependencies.transcript_parsing,
         ),
     ],
     language: Annotated[

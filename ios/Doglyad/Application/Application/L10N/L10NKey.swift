@@ -199,6 +199,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanSpeechReviewRecordAgainButton
     case scanSpeechReviewTimedOutDescription
     case scanSpeechTitle
+    case scanSpeechTranscriptionFailedDescription
+    case scanSpeechTranscriptionRetainedDescription
     case scanTemplateCardExaminationTypeMismatchDescription
     case scanTemplateCardNoTemplateLabel
     case scanTemplateCardTitleLabel
@@ -210,6 +212,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case selectTranscriberSpeechAnalyzerDescription
     case selectTranscriberSpeechAnalyzerTitle
     case selectTranscriberTitle
+    case selectTranscriberTOneDescription
+    case selectTranscriberTOneTitle
     case selectTranscriberWhisperKitDescription
     case selectTranscriberWhisperKitTitle
     case selectTranscriptParserFoundationModelsDescription

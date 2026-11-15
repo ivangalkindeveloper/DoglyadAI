@@ -51,9 +51,10 @@ struct SettingsAIScreenView: DViewProtocol {
                                     .settingsAITranscriptParserTitle,
                                 ],
                                 description: l10n[
-                                    viewModel.transcriptParserType.titleKey,
+                                    viewModel.effectiveTranscriptParserType.titleKey,
                                 ],
                                 action: viewModel.onTapTranscriptParser,
+                                isDisabled: !viewModel.isTranscriptParserSelectionEnabled,
                             )
                         } header: {
                             SectionHeaderView(

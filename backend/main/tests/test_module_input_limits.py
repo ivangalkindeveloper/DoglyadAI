@@ -21,7 +21,7 @@ from app.model.application_module_config import ApplicationModuleConfig
 from app.model.report_email import ReportEmail
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
-from app.service.dictation.dictation_parsing_service import DictationParsingService
+from app.service.dictation.transcript_parsing_service import TranscriptParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.neural_model_service import NeuralModelService
 from app.service.report.report_generation_jobs import ReportGenerationJobs
@@ -221,7 +221,7 @@ def test_dictation_limit_comes_from_its_module_before_model_execution(
     model = AsyncMock(
         spec=NeuralModelService,
     )
-    service = DictationParsingService(
+    service = TranscriptParsingService(
         replace(
             configuration,
             modules=modules,
@@ -234,6 +234,7 @@ def test_dictation_limit_comes_from_its_module_before_model_execution(
         asyncio.run(
             service.parse(
                 USVoiceFormParseRequest(
+                    selectedNeuralModelId="google/medgemma-4b-it",
                     usExaminationTypeId="bladder",
                     transcript="Text",
                 ),

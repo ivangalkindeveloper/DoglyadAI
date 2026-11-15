@@ -73,7 +73,7 @@ unprotected client API. Do not invent a public configuration exception.
 
 Call the ready `NeuralModelService` through an owning application service. Build
 prompts with `PromptFactory` and loaded localization, then submit the internal
-`NeuralModelServiceRequest`. The main backend never runs model inference.
+`NeuralModelServiceRequest`. The main backend runs only T-one CPU speech recognition in its dedicated process. LLM generation remains in the inference service.
 
 `app/service/neural_model/neural_model_service_factory.py` selects the implementation once
 from `MODEL_SERVICE_TYPE`; `ENVIRONMENT` selects documents only. Do not duplicate

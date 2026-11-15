@@ -10,7 +10,7 @@ class USVoiceFormParseRequest(BaseModel):
         extra="forbid",
     )
 
-    selectedNeuralModelId: NonBlankString | None = None
+    selectedNeuralModelId: NonBlankString
     usExaminationTypeId: str = Field(
         min_length=1,
         max_length=128,

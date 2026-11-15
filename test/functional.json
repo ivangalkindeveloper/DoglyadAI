@@ -1025,6 +1025,22 @@
       "dependsOn": []
     },
     {
+      "id": "e2e-settingsai-tone",
+      "title": "Выбрать T-one и сохранить серверный распознаватель",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/tone.yaml",
+      "sources": [
+        "SettingsAI",
+        "SelectTranscriber"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-tone-saved"
+      ]
+    },
+    {
       "id": "e2e-settingsai-providers",
       "title": "Выбрать WhisperKit и серверный парсер и сохранить",
       "kind": "functional",
