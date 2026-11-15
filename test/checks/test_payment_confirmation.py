@@ -12,7 +12,7 @@ from payment_evidence import verify_payment
 class PaymentConfirmationTests(unittest.TestCase):
     def test_pending_and_success_require_distinct_signed_callback_evidence(self):
         catalog = json.loads((Path(__file__).resolve().parents[2] / 'backend/main/config/development/billing.json').read_text())
-        plan = next(p for p in catalog['products'] if p['id']=='pro_weekly')
+        plan = next(p for tier in catalog for p in tier['products'] if p['id']=='pro_weekly')
         ledger = dict(id='order', provider_id='123', invoice_id='123', owner_id='owner', source='robokassa', plan_id='pro_weekly', status='pending', channel='redirect', was_submitted=True, payment_count=1, has_access=False, signed_event=False, is_test=True, merchant_login='test', amount_minor=plan['price']['amountMinor'], currency='RUB')
         env = {'REGRESSION_ROBOKASSA_MERCHANT_LOGIN': 'test'}
         def verify(row, outcome='pending'):

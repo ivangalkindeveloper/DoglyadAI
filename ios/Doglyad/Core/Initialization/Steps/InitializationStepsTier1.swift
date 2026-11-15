@@ -129,6 +129,7 @@ extension InitializationProcess {
                         let backend = SubscriptionBackendRepository(
                             httpClient: process.httpClient!,
                             securityDatabase: process.securityDatabase!,
+                            getAcceptedLegalDocumentDate: process.sharedRepository!.getAcceptedLegalDocumentDate,
                         )
                         process.subscriptionBackendRepository = backend
                         process.subscriptionStoreKitRepository = SubscriptionStoreKitRepository(

@@ -36,13 +36,13 @@ class BillingCatalogResponseService:
                         for key in tier.featureLocaleKeys
                     ],
                 )
-                for tier in catalog.tiers
+                for tier in catalog.root
             ],
             products=[
                 BillingProductResponse(
                     id=plan.id,
                     period=plan.period,
-                    entitlement=plan.entitlement,
+                    entitlement=tier.id,
                     price=plan.price,
                     title=configuration.text(
                         language,
@@ -53,6 +53,7 @@ class BillingCatalogResponseService:
                         plan.priceTemplateLocaleKey,
                     ),
                 )
-                for plan in catalog.products
+                for tier in catalog.root
+                for plan in tier.products
             ],
         )

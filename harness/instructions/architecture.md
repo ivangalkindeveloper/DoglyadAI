@@ -38,13 +38,21 @@ reconciliation worker. All client `/v1/subscriptions/*` routes retain App Check;
 owner-specific operations additionally require an anonymous bearer secret. Base
 and Pro are paid tiers. UUIDs and browser redirects never prove access.
 
-`billing.json` contains one `products` array with `id`, `entitlement`, `period`,
+`billing.json` is a root array of tiers with `id`, `titleLocaleKey`,
+`featureLocaleKeys` and nested `products`. Each product declares `id`, `period`,
 `price` (`amountMinor`, `currencyIso2Code`), `titleLocaleKey` and
-`priceTemplateLocaleKey`. The backend resolves these keys through `l10n.json`
-and returns `title` and `priceTemplate` for the requested language. The protected
-`/v1/subscriptions/plans` response uses the same product list.
-The catalog also declares `tiers` with `id`, `titleLocaleKey` and
-`featureLocaleKeys`. The response resolves them into `id`, `title` and `features`.
+`priceTemplateLocaleKey`; its entitlement comes from the parent tier ID.
+Product IDs remain globally unique across tiers. The backend resolves localization
+keys through `l10n.json`. The protected `/v1/subscriptions/plans` response retains
+flat `tiers` and `products` arrays with localized strings and derived entitlements.
+`application.json.legalDate` is the only legal-document version. Initial Robokassa
+checkout sends the device's persisted accepted date and must match the current
+server date as a timezone-aware instant. Orders and subscriptions retain that date.
+Before a new provider dispatch or renewal, reject an outdated date and disable
+renewal while retaining paid access. Acceptance alone cannot resume the old schedule:
+the user must purchase a new subscription. Reconcile already dispatched payments
+even after a version change; late success grants its paid period without outdated
+renewal. Apple renewals remain controlled by the App Store.
 Segment labels and benefits come from these entities for both providers. IDs are shared by
 Apple and Robokassa. Apple prices and periods come from StoreKit; the catalog's
 RUB price applies to Robokassa. Robokassa supports weekly, monthly, six-month and annual

@@ -35,6 +35,11 @@ struct BillingRecoveryTests {
         let repository = SubscriptionBackendRepository(
             httpClient: http,
             securityDatabase: store,
+            getAcceptedLegalDocumentDate: {
+                Date(
+                    timeIntervalSince1970: 1794700800,
+                )
+            },
         )
         _ = try await repository.checkPayment(
             id: paymentId,
@@ -82,6 +87,11 @@ struct BillingRecoveryTests {
         let repository = SubscriptionBackendRepository(
             httpClient: http,
             securityDatabase: store,
+            getAcceptedLegalDocumentDate: {
+                Date(
+                    timeIntervalSince1970: 1794700800,
+                )
+            },
         )
         let entitlements = SubscriptionManagePreviewFactory.makeContainer().applicationConfig.entitlements
         let status = try await repository.recover(

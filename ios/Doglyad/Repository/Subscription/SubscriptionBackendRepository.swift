@@ -6,13 +6,16 @@ import Foundation
 final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol {
     private let httpClient: DHttpClientProtocol
     private let securityDatabase: DSecurityDatabaseProtocol
+    private let getAcceptedLegalDocumentDate: () async throws -> Date?
 
     init(
         httpClient: DHttpClientProtocol,
         securityDatabase: DSecurityDatabaseProtocol,
+        getAcceptedLegalDocumentDate: @escaping () async throws -> Date?,
     ) {
         self.httpClient = httpClient
         self.securityDatabase = securityDatabase
+        self.getAcceptedLegalDocumentDate = getAcceptedLegalDocumentDate
     }
 
     func configureIdentity() async throws {
@@ -139,6 +142,9 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
         price: BillingPrice,
         isAutoRenewing: Bool,
     ) async throws -> BillingPreparePaymentResponse {
+        guard let legalDate = try await getAcceptedLegalDocumentDate() else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         let ownerId = try await fetchOwnerID()
         let response: BillingPreparePaymentResponse = try await httpClient.post(
             endPoint: "/subscriptions/prepare_payment",
@@ -146,6 +152,7 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
                 planId: planID,
                 price: price,
                 isAutoRenewing: isAutoRenewing,
+                legalDate: legalDate,
             ),
         )
         try await saveRecoveryKey(

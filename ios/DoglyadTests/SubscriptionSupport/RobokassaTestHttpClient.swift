@@ -66,9 +66,13 @@ actor RobokassaTestHttpClient: DHttpClientProtocol {
         if let body {
             requestBodies[
                 endPoint,
-            ] = try JSONEncoder().encode(
-                body,
-            )
+            ] = try {
+                let encoder = JSONEncoder()
+                encoder.dateEncodingStrategy = .iso8601
+                return try encoder.encode(
+                    body,
+                )
+            }()
         }
         requests.append(
             endPoint,

@@ -43,6 +43,7 @@ def test_direct_checkout_preserves_paywall_choice_and_signed_callback_contact(
                 "monthly",
                 LanguageCode.RU,
                 is_auto_renewing=is_auto_renewing,
+                legal_date=ctx.service.legal_date,
             )
             assert prepared.payment.status == "pending"
             assert prepared.checkoutUrl == "https://auth.robokassa.ru/merchant/Invoice/test"
@@ -64,7 +65,13 @@ def test_direct_checkout_preserves_paywall_choice_and_signed_callback_contact(
                     ),
                 )
                 assert order is not None and order.consent_at and order.is_auto_renewing is is_auto_renewing
-                assert order.receipt_email is None and order.terms_version == "test-v1"
+                assert (
+                    order.receipt_email is None
+                    and ctx.service._utc(
+                        order.legal_date,
+                    )
+                    == configuration.legal_date
+                )
                 invoice_id = order.invoice_id
             app = ApplicationFactory.create_payment(
                 Variables(
@@ -181,11 +188,13 @@ def test_direct_checkout_reuses_one_invoice_and_keeps_owner_isolation(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             repeated = await ctx.checkout.prepare(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert repeated.payment.id == prepared.payment.id
             assert (
@@ -223,6 +232,7 @@ def test_direct_checkout_reuses_one_invoice_and_keeps_owner_isolation(
                 "monthly",
                 LanguageCode.RU,
                 is_auto_renewing=False,
+                legal_date=ctx.service.legal_date,
             )
             assert replacement.payment.id != prepared.payment.id
             assert (
@@ -260,6 +270,7 @@ def test_changed_paywall_price_cannot_start_an_invoice(
                         amountMinor=1,
                         currencyIso2Code="RUB",
                     ),
+                    legal_date=ctx.service.legal_date,
                 )
             assert not ctx.requests and not ctx.payments
 

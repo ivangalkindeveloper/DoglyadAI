@@ -37,6 +37,7 @@ def test_refund_dispatch_is_never_replayed_and_worker_tracks_known_request(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             payment = ctx.payments[
                 str(

@@ -403,11 +403,13 @@ def test_checkout_webhook_renewal_and_refund(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             resumed = await ctx.checkout.prepare(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert prepared.payment.id == resumed.payment.id
             assert prepared.checkoutUrl == "https://auth.robokassa.ru/merchant/Invoice/test"
@@ -539,6 +541,7 @@ def test_payment_validation(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             payment = next(
                 iter(
@@ -596,6 +599,7 @@ def test_canonical_payment_mode_must_match_environment(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             payment = next(
                 iter(
@@ -654,6 +658,7 @@ def test_production_prepares_live_invoice_without_granting_access(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert prepared.payment.planId == "monthly"
             assert (
@@ -702,6 +707,7 @@ def test_cancellation_keeps_paid_period(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             payment = next(
                 iter(
@@ -983,6 +989,7 @@ def test_billing_api_requires_owner_secret(
                         "planId": "monthly",
                         "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
                         "isAutoRenewing": False,
+                        "legalDate": configuration.legal_date.isoformat(),
                     },
                 )
                 assert checkout.status_code == 200

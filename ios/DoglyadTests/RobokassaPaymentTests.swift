@@ -39,6 +39,11 @@ struct RobokassaPaymentTests {
             backend: SubscriptionBackendRepository(
                 httpClient: http,
                 securityDatabase: securityDatabase,
+                getAcceptedLegalDocumentDate: {
+                    Date(
+                        timeIntervalSince1970: 1794700800,
+                    )
+                },
             ),
         )
         let plan = SubscriptionPlan(
@@ -67,6 +72,59 @@ struct RobokassaPaymentTests {
         }
         #expect(
             await http.requests == ["/subscriptions/prepare_payment"],
+        )
+        let body = try #require(
+            await http.requestBodies[
+                "/subscriptions/prepare_payment",
+            ],
+        )
+        let document = try #require(
+            JSONSerialization.jsonObject(
+                with: body,
+            ) as? [String: Any],
+        )
+        #expect(
+            document[
+                "legalDate",
+            ] as? String == Date(
+                timeIntervalSince1970: 1794700800,
+            ).ISO8601Format(),
+        )
+    }
+
+    @Test
+    func missingLegalAcceptanceCannotStartCheckout() async {
+        let http = RobokassaTestHttpClient(
+            responses: [:],
+        )
+        let backend = SubscriptionBackendRepository(
+            httpClient: http,
+            securityDatabase: DSecurityDatabase(
+                service: "MissingLegalAcceptance." + UUID().uuidString,
+            ),
+            getAcceptedLegalDocumentDate: {
+                nil
+            },
+        )
+        do {
+            _ = try await backend.preparePayment(
+                planID: "monthly",
+                price: BillingPrice(
+                    amountMinor: 10000,
+                    currencyIso2Code: "RUB",
+                ),
+                isAutoRenewing: true,
+            )
+            Issue.record(
+                "A purchase requires persisted document acceptance",
+            )
+        } catch SubscriptionError.offeringsUnavailable {} catch {
+            Issue.record(
+                "Unexpected acceptance error",
+            )
+        }
+        #expect(
+            await http.requests.isEmpty,
         )
     }
 
@@ -114,6 +172,11 @@ struct RobokassaPaymentTests {
             backend: SubscriptionBackendRepository(
                 httpClient: http,
                 securityDatabase: securityDatabase,
+                getAcceptedLegalDocumentDate: {
+                    Date(
+                        timeIntervalSince1970: 1794700800,
+                    )
+                },
             ),
             openCheckout: { url in
                 #expect(
@@ -205,6 +268,11 @@ struct RobokassaPaymentTests {
             backend: SubscriptionBackendRepository(
                 httpClient: http,
                 securityDatabase: securityDatabase,
+                getAcceptedLegalDocumentDate: {
+                    Date(
+                        timeIntervalSince1970: 1794700800,
+                    )
+                },
             ),
         )
         let plan = SubscriptionPlan(

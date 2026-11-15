@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.model.billing.billing_period import BillingPeriod
@@ -21,7 +19,6 @@ class BillingProductConfig(BaseModel):
         max_length=128,
     )
     period: BillingPeriod
-    entitlement: Literal["base", "pro"]
     price: BillingPrice
     titleLocaleKey: NonBlankString
     priceTemplateLocaleKey: NonBlankString

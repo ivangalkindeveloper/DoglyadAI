@@ -130,6 +130,11 @@ class BillingSubscriptionDB(ApplicationBase):
         ),
         default="RUB",
     )
+    legal_date: Mapped[datetime | None] = mapped_column(
+        DateTime(
+            timezone=True,
+        ),
+    )
     next_charge_at: Mapped[datetime | None] = mapped_column(
         DateTime(
             timezone=True,

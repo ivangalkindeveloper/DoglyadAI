@@ -61,6 +61,27 @@ struct CoordinatorTests {
         )
     }
 
+    @Test(
+        arguments: [0.0, 1.0, 2.0],
+    )
+    func legalAcceptanceMustMatchTheConfiguredInstant(
+        acceptedTimestamp: TimeInterval,
+    ) {
+        let route = Coordinator.initialRoute(
+            for: context(
+                legalDate: Date(
+                    timeIntervalSince1970: 1,
+                ),
+                acceptedLegalDocumentDate: Date(
+                    timeIntervalSince1970: acceptedTimestamp,
+                ),
+            ),
+        )
+        #expect(
+            route.type == (acceptedTimestamp == 1 ? .scan : .legalUpdate),
+        )
+    }
+
     private func context(
         isOnBoardingCompleted: Bool = true,
         selectedUSExaminationTypeId: String? = "type",

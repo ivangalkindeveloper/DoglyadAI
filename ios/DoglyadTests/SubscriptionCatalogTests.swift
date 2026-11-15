@@ -25,6 +25,11 @@ struct SubscriptionCatalogTests {
             backend: SubscriptionBackendRepository(
                 httpClient: http,
                 securityDatabase: DSecurityDatabase(),
+                getAcceptedLegalDocumentDate: {
+                    Date(
+                        timeIntervalSince1970: 1794700800,
+                    )
+                },
             ),
         )
         let offer = try await repository.fetchCatalog()
@@ -78,6 +83,11 @@ struct SubscriptionCatalogTests {
         let backend = SubscriptionBackendRepository(
             httpClient: http,
             securityDatabase: DSecurityDatabase(),
+            getAcceptedLegalDocumentDate: {
+                Date(
+                    timeIntervalSince1970: 1794700800,
+                )
+            },
         )
         let catalog = try await backend.fetchPlans()
         #expect(

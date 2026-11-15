@@ -45,5 +45,6 @@ async def prepare_payment(
         body.planId,
         language,
         is_auto_renewing=body.isAutoRenewing,
+        legal_date=body.legalDate,
         expected_price=body.price,
     )

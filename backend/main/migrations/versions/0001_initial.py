@@ -130,6 +130,13 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
+            "legal_date",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
             "apple_environment",
             sa.String(
                 length=16,
@@ -639,9 +646,9 @@ def upgrade() -> None:
             nullable=True,
         ),
         sa.Column(
-            "terms_version",
-            sa.String(
-                length=128,
+            "legal_date",
+            sa.DateTime(
+                timezone=True,
             ),
             nullable=True,
         ),

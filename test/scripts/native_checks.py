@@ -100,6 +100,7 @@ REQUIRED_TESTS = [
     "SubscriptionPaywallTests/catalogFailureDoesNotRouteRecoveryOrQueryStorefrontAgain()",
     "SubscriptionPaywallTests/autoRenewalDefaultsToEnabledAndPreservesTheChoiceThroughPurchaseCancellation()",
     "RobokassaPaymentTests/paymentIsCheckedOnlyAfterTheBrowserCloses(isReturned:)",
+    "RobokassaPaymentTests/missingLegalAcceptanceCannotStartCheckout()",
     "SubscriptionPurchaseVerificationTests/verifiedRobokassaPurchaseFetchesAccessWithoutRepeatingPaymentVerification()",
     "SubscriptionPurchaseVerificationTests/pendingRobokassaPurchaseChecksOnlyThePaymentUntilItSucceeds()",
     "SubscriptionPurchaseVerificationTests/canceledPurchaseDoesNotFetchPaymentOrSubscriptionAgain()",

@@ -107,6 +107,7 @@ cases:
     - SubscriptionPaywallTests/pendingRobokassaPaymentClosesOnlyAfterItsExactConfirmation()
     - SubscriptionPaywallTests/retryingTheSamePendingPaymentCannotPurchaseAnotherPeriod()
     - RobokassaPaymentTests/paymentIsCheckedOnlyAfterTheBrowserCloses(isReturned:)
+    - RobokassaPaymentTests/missingLegalAcceptanceCannotStartCheckout()
     - SubscriptionPurchaseVerificationTests/verifiedRobokassaPurchaseFetchesAccessWithoutRepeatingPaymentVerification()
     - SubscriptionPurchaseVerificationTests/pendingRobokassaPurchaseChecksOnlyThePaymentUntilItSucceeds()
     - SubscriptionPurchaseVerificationTests/canceledPurchaseDoesNotFetchPaymentOrSubscriptionAgain()

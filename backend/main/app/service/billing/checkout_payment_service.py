@@ -11,6 +11,7 @@ from app.database.billing_payment_db import BillingPaymentDB
 from app.database.billing_subscription_db import BillingSubscriptionDB
 from app.error.billing_access_denied_error import BillingAccessDeniedError
 from app.error.billing_conflict_error import BillingConflictError
+from app.error.billing_legal_update_required_error import BillingLegalUpdateRequiredError
 from app.error.billing_payment_error import BillingPaymentError
 from app.error.billing_purchase_error import BillingPurchaseError
 from app.error.billing_unavailable_error import BillingUnavailableError
@@ -36,9 +37,21 @@ class CheckoutPaymentService:
         plan_id: str,
         language: LanguageCode,
         *,
+        legal_date: datetime,
         is_auto_renewing: bool = True,
         expected_price: BillingPrice | None = None,
     ) -> BillingPreparePaymentResponse:
+        if (
+            legal_date.tzinfo is None
+            or legal_date.astimezone(
+                UTC,
+            )
+            != self._configuration.legal_date
+        ):
+            raise BillingLegalUpdateRequiredError()
+        legal_date = legal_date.astimezone(
+            UTC,
+        )
         if not self._subscriptions.is_payment_available:
             raise BillingUnavailableError()
         plan = next(
@@ -78,7 +91,12 @@ class CheckoutPaymentService:
             )
             previous_id = previous.id if previous else None
             is_replacement_requested = previous is not None and (
-                previous.plan_id != plan_id
+                previous.legal_date is None
+                or self._subscriptions._utc(
+                    previous.legal_date,
+                )
+                != legal_date
+                or previous.plan_id != plan_id
                 or previous.is_auto_renewing != is_auto_renewing
                 or previous.amount_minor != plan.price.amountMinor
                 or previous.currency != plan.price.currencyIso2Code
@@ -93,7 +111,16 @@ class CheckoutPaymentService:
                     BillingPaymentDB,
                     previous_id,
                 )
-                if previous and previous.status == "succeeded" and previous.plan_id == plan_id:
+                if (
+                    previous
+                    and previous.status == "succeeded"
+                    and previous.plan_id == plan_id
+                    and previous.legal_date is not None
+                    and self._subscriptions._utc(
+                        previous.legal_date,
+                    )
+                    == legal_date
+                ):
                     resumed = previous
                 else:
                     resumed = None
@@ -149,7 +176,12 @@ class CheckoutPaymentService:
                 ),
             )
             if order and (
-                order.plan_id != plan_id
+                order.legal_date is None
+                or self._subscriptions._utc(
+                    order.legal_date,
+                )
+                != legal_date
+                or order.plan_id != plan_id
                 or order.subscription_id
                 or order.is_auto_renewing != is_auto_renewing
                 or order.amount_minor != plan.price.amountMinor
@@ -172,7 +204,7 @@ class CheckoutPaymentService:
                     receipt_description="Doglyad " + plan.title,
                     channel="redirect",
                     status="created",
-                    terms_version=self._subscriptions.terms_version,
+                    legal_date=legal_date,
                     consent_at=now,
                     is_auto_renewing=is_auto_renewing,
                     created_at=now,

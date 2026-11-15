@@ -227,7 +227,7 @@ final class Coordinator {
         }
 
         let acceptedLegalDate = context.acceptedLegalDocumentDate ?? .distantPast
-        if acceptedLegalDate < applicationConfig.legalDate {
+        if acceptedLegalDate != applicationConfig.legalDate {
             return RouteScreen(
                 type: .legalUpdate,
             )

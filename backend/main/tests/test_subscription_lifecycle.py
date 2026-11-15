@@ -29,6 +29,7 @@ async def _pay(
         plan,
         LanguageCode.RU,
         is_auto_renewing=is_auto_renewing,
+        legal_date=ctx.service.legal_date,
     )
     order_id = str(
         prepared.payment.id,
@@ -56,32 +57,29 @@ def test_paid_plan_change_starts_immediately_and_replaces_previous_access(
     new_plan: str,
 ) -> None:
     async def run() -> None:
-        catalog = {
-            "termsVersion": "test-v1",
-            "tiers": [
-                {
-                    "id": tier,
-                    "titleLocaleKey": f"subscriptionPaywall{tier.title()}Label",
-                    "featureLocaleKeys": [f"subscriptionPaywall{tier.title()}ModelsDescription"],
-                }
-                for tier in ("base", "pro")
-            ],
-            "products": [
-                {
-                    "id": identifier,
-                    "period": period,
-                    "entitlement": tier,
-                    "titleLocaleKey": f"subscription{tier.title()}{period.title()}Label",
-                    "priceTemplateLocaleKey": f"subscription{period.title()}PriceDescription",
-                    "price": {"amountMinor": amount, "currencyIso2Code": "RUB"},
-                }
-                for identifier, period, tier, amount in [
-                    ("base.monthly", "monthly", "base", 30000),
-                    ("pro.monthly", "monthly", "pro", 60000),
-                    ("base.weekly", "weekly", "base", 10000),
-                ]
-            ],
-        }
+        catalog = [
+            {
+                "id": tier,
+                "titleLocaleKey": f"subscriptionPaywall{tier.title()}Label",
+                "featureLocaleKeys": [f"subscriptionPaywall{tier.title()}ModelsDescription"],
+                "products": [
+                    {
+                        "id": identifier,
+                        "period": period,
+                        "titleLocaleKey": f"subscription{tier.title()}{period.title()}Label",
+                        "priceTemplateLocaleKey": f"subscription{period.title()}PriceDescription",
+                        "price": {"amountMinor": amount, "currencyIso2Code": "RUB"},
+                    }
+                    for identifier, period, product_tier, amount in [
+                        ("base.monthly", "monthly", "base", 30000),
+                        ("pro.monthly", "monthly", "pro", 60000),
+                        ("base.weekly", "weekly", "base", 10000),
+                    ]
+                    if product_tier == tier
+                ],
+            }
+            for tier in ("base", "pro")
+        ]
         async with BillingTestContext(
             tmp_path,
             configuration,
@@ -225,6 +223,7 @@ def test_unpaid_or_canceled_replacement_keeps_the_current_subscription(
                 owner,
                 "test.monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert (
                 await ctx.service.status(
@@ -268,6 +267,7 @@ def test_restart_reuses_invoice_and_bank_processing_is_never_canceled(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             order_id = str(
                 initial.payment.id,
@@ -277,6 +277,7 @@ def test_restart_reuses_invoice_and_bank_processing_is_never_canceled(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert repeated.payment.id == initial.payment.id
             pending = await ctx.checkout.check(
@@ -292,6 +293,7 @@ def test_restart_reuses_invoice_and_bank_processing_is_never_canceled(
                     owner,
                     "test.monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             async with ctx.database.session() as session, session.begin():
                 order = await session.get(
@@ -359,12 +361,14 @@ def test_changed_unpaid_choice_deactivates_old_invoice_before_replacement(
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             second = await ctx.checkout.prepare(
                 owner,
                 "test.monthly",
                 LanguageCode.RU,
                 is_auto_renewing=False,
+                legal_date=ctx.service.legal_date,
             )
             assert first.payment.id != second.payment.id
             assert (
@@ -426,6 +430,7 @@ def test_late_success_on_prepare_returns_exact_paid_order_and_stable_encrypted_k
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             order_id = str(
                 first.payment.id,
@@ -438,6 +443,7 @@ def test_late_success_on_prepare_returns_exact_paid_order_and_stable_encrypted_k
                 owner,
                 "monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             assert resumed.payment.id == first.payment.id and resumed.payment.status == "succeeded"
             key = resumed.payment.recoveryKey
@@ -554,6 +560,7 @@ def test_disabling_renewal_also_applies_to_a_late_paid_plan_change(
                 owner,
                 "test.monthly",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             order_id = str(
                 prepared.payment.id,

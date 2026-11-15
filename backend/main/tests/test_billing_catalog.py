@@ -28,27 +28,23 @@ from tests.support.billing.billing_test_context import BillingTestContext
 
 def catalog_for(
     period: BillingPeriod,
-) -> dict[str, Any]:
-    return {
-        "termsVersion": "test-v1",
-        "tiers": [
-            {
-                "id": "pro",
-                "titleLocaleKey": "subscriptionPaywallProLabel",
-                "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
-            }
-        ],
-        "products": [
-            {
-                "id": "test-robokassa",
-                "period": period.value,
-                "entitlement": "pro",
-                "titleLocaleKey": "subscriptionProMonthlyLabel",
-                "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
-                "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
-            }
-        ],
-    }
+) -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "pro",
+            "titleLocaleKey": "subscriptionPaywallProLabel",
+            "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
+            "products": [
+                {
+                    "id": "test-robokassa",
+                    "period": period.value,
+                    "titleLocaleKey": "subscriptionProMonthlyLabel",
+                    "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
+                    "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                }
+            ],
+        }
+    ]
 
 
 @pytest.mark.parametrize(
@@ -68,7 +64,7 @@ def test_missing_product_translation_prevents_billing_startup(
             catalog = catalog_for(
                 BillingPeriod.MONTHLY,
             )
-            catalog["products"][0][field] = "missingBillingTestLabel"
+            catalog[0]["products"][0][field] = "missingBillingTestLabel"
             (ctx.variables.configuration_directory / "billing.json").write_text(
                 json.dumps(
                     catalog,
@@ -190,7 +186,7 @@ def test_shared_catalog_and_endpoint_remains_protected(
                 assert {product["id"] for product in data["products"]} == expected
                 for tier, configured in zip(
                     data["tiers"],
-                    development["tiers"],
+                    development,
                     strict=True,
                 ):
                     assert set(
@@ -210,7 +206,7 @@ def test_shared_catalog_and_endpoint_remains_protected(
                     ]
                 for product in data["products"]:
                     configured = next(
-                        (item for item in development["products"] if item["id"] == product["id"]),
+                        (item for tier in development for item in tier["products"] if item["id"] == product["id"]),
                     )
                     assert product["title"] == configuration.text(
                         language,
@@ -258,7 +254,7 @@ def test_removing_product_stops_new_purchases(
         catalog = catalog_for(
             BillingPeriod.MONTHLY,
         )
-        catalog["products"] = []
+        catalog[0]["products"] = []
         async with BillingTestContext(
             tmp_path,
             configuration,
@@ -278,6 +274,7 @@ def test_removing_product_stops_new_purchases(
                     owner,
                     "test-robokassa",
                     LanguageCode.EN,
+                    legal_date=ctx.service.legal_date,
                 )
             with pytest.raises(
                 BillingPurchaseError,
@@ -286,6 +283,7 @@ def test_removing_product_stops_new_purchases(
                     owner,
                     "test-robokassa",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             assert ctx.requests == []
 
@@ -305,13 +303,13 @@ def test_invalid_tier_metadata_is_rejected(
         BillingPeriod.MONTHLY,
     )
     if case == "duplicate":
-        catalog["tiers"].append(
-            catalog["tiers"][0].copy(),
+        catalog.append(
+            catalog[0].copy(),
         )
     elif case == "missing":
-        catalog["tiers"] = []
+        del catalog[0]["id"]
     else:
-        catalog["tiers"][0]["featureLocaleKeys"] = []
+        catalog[0]["featureLocaleKeys"] = []
     with pytest.raises(
         ValidationError,
     ):
@@ -337,7 +335,7 @@ def test_missing_tier_translation_prevents_billing_startup(
             catalog = catalog_for(
                 BillingPeriod.MONTHLY,
             )
-            catalog["tiers"][0][field] = ["missingTierLabel"] if field == "featureLocaleKeys" else "missingTierLabel"
+            catalog[0][field] = ["missingTierLabel"] if field == "featureLocaleKeys" else "missingTierLabel"
             (ctx.variables.configuration_directory / "billing.json").write_text(
                 json.dumps(
                     catalog,
@@ -364,8 +362,8 @@ def test_duplicate_product_identifiers_are_rejected() -> None:
     catalog = catalog_for(
         BillingPeriod.MONTHLY,
     )
-    catalog["products"].append(
-        catalog["products"][0].copy(),
+    catalog[0]["products"].append(
+        catalog[0]["products"][0].copy(),
     )
     with pytest.raises(
         ValidationError,
@@ -391,7 +389,7 @@ def test_catalog_rejects_invalid_or_legacy_price(
     catalog = catalog_for(
         BillingPeriod.MONTHLY,
     )
-    catalog["products"][0]["price"] = price
+    catalog[0]["products"][0]["price"] = price
     with pytest.raises(
         ValidationError,
     ):
@@ -513,6 +511,7 @@ def test_checkout_and_renewal_keep_paid_period_and_price_snapshot(
                 owner,
                 "test-robokassa",
                 LanguageCode.EN,
+                legal_date=ctx.service.legal_date,
             )
             payment = next(
                 iter(
@@ -534,8 +533,8 @@ def test_checkout_and_renewal_keep_paid_period_and_price_snapshot(
             changed_catalog = catalog_for(
                 BillingPeriod.ANNUAL,
             )
-            changed_catalog["products"][0]["price"]["amountMinor"] = 999999
-            changed_catalog["products"][0]["id"] = "new-plan"
+            changed_catalog[0]["products"][0]["price"]["amountMinor"] = 999999
+            changed_catalog[0]["products"][0]["id"] = "new-plan"
             ctx.service._catalog = BillingCatalog.model_validate(
                 changed_catalog,
             )
@@ -609,6 +608,7 @@ def test_browser_checkout_snapshots_each_period(
                 owner,
                 "test-robokassa",
                 LanguageCode.RU,
+                legal_date=ctx.service.legal_date,
             )
             async with ctx.database.session() as session:
                 order = await session.scalar(
@@ -668,7 +668,7 @@ def test_retired_apple_product_restores_only_an_existing_verified_subscription(
                 "verified-transaction",
             )
             ctx.service._catalog = ctx.service._catalog.model_copy(
-                update={"products": []},
+                update={"root": []},
             )
             assert (
                 ctx.service.plans(
@@ -729,3 +729,20 @@ def test_retired_apple_product_restores_only_an_existing_verified_subscription(
     asyncio.run(
         run(),
     )
+
+
+def test_product_identifiers_are_unique_across_tiers() -> None:
+    catalog = catalog_for(
+        BillingPeriod.MONTHLY,
+    )
+    other = {**catalog[0], "id": "base"}
+    catalog.append(
+        other,
+    )
+    with pytest.raises(
+        ValidationError,
+        match="product identifiers must be unique",
+    ):
+        BillingCatalog.model_validate(
+            catalog,
+        )

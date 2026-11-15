@@ -33,7 +33,7 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
         *,
         is_live: bool = False,
         environment: Literal["development", "production"] = "development",
-        catalog: dict[str, Any] | None = None,
+        catalog: list[dict[str, Any]] | None = None,
     ) -> None:
         catalog_dir = directory / environment
         catalog_dir.mkdir(
@@ -44,27 +44,23 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
             json.dumps(
                 catalog
                 if catalog is not None
-                else {
-                    "termsVersion": "test-v1",
-                    "tiers": [
-                        {
-                            "id": "pro",
-                            "titleLocaleKey": "subscriptionPaywallProLabel",
-                            "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
-                        }
-                    ],
-                    "products": [
-                        {
-                            "id": identifier,
-                            "period": "monthly",
-                            "entitlement": "pro",
-                            "titleLocaleKey": "subscriptionProMonthlyLabel",
-                            "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
-                            "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
-                        }
-                        for identifier in ("monthly", "test.monthly")
-                    ],
-                },
+                else [
+                    {
+                        "id": "pro",
+                        "titleLocaleKey": "subscriptionPaywallProLabel",
+                        "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
+                        "products": [
+                            {
+                                "id": identifier,
+                                "period": "monthly",
+                                "titleLocaleKey": "subscriptionProMonthlyLabel",
+                                "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
+                                "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                            }
+                            for identifier in ("monthly", "test.monthly")
+                        ],
+                    }
+                ],
             ),
         )
         self.variables = Variables(

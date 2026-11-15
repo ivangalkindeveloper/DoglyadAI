@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from typing import Any
 
 from app.core.localization.language_code import LanguageCode
@@ -36,6 +37,21 @@ class Configuration:
     ready_made_templates: list[USExaminationReadyMadeTemplate]
     application_localizations: dict[LanguageCode, L10nResponse]
     voice_source_localizations: dict[LanguageCode, USVoiceSourceLocalization]
+
+    @property
+    def legal_date(
+        self,
+    ) -> datetime:
+        value = datetime.fromisoformat(
+            self.application["legalDate"],
+        )
+        if value.tzinfo is None:
+            raise ValueError(
+                "legalDate must include a timezone",
+            )
+        return value.astimezone(
+            UTC,
+        )
 
     @property
     def photo_max_count(

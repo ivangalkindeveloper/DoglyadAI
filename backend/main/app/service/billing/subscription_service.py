@@ -11,7 +11,7 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from appstoreserverlibrary.models.Environment import Environment
-from sqlalchemy import case, func, select, update
+from sqlalchemy import case, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.configuration.configuration import Configuration
@@ -64,16 +64,17 @@ class SubscriptionService:
         self._catalog = BillingCatalog.model_validate_json(
             (variables.configuration_directory / "billing.json").read_text(),
         )
+        _ = self._configuration.legal_date
         for language in LanguageCode:
             self.plans(
                 language,
             )
 
     @property
-    def terms_version(
+    def legal_date(
         self,
-    ) -> str:
-        return self._catalog.termsVersion
+    ) -> datetime:
+        return self._configuration.legal_date
 
     @property
     def is_payment_available(
@@ -471,6 +472,11 @@ class SubscriptionService:
                     order.status = "canceled"
                 return
             if order.submitted_at is None:
+                if await self._cancel_outdated_order(
+                    session,
+                    order,
+                ):
+                    return
                 if order.subscription_id:
                     subscription = await session.get(
                         BillingSubscriptionDB,
@@ -551,6 +557,11 @@ class SubscriptionService:
             if order.source != "robokassa":
                 raise BillingPurchaseError()
             if order.status not in ("created", "pending"):
+                return
+            if is_initial_attempt and await self._cancel_outdated_order(
+                session,
+                order,
+            ):
                 return
             if not order.invoice_id:
                 raise BillingPurchaseError()
@@ -1067,6 +1078,7 @@ class SubscriptionService:
                         owner_id=order.owner_id,
                         source="robokassa",
                         receipt_email=order.receipt_email,
+                        legal_date=order.legal_date,
                         external_id=provider_id,
                         plan_id=order.plan_id,
                         entitlement=order.entitlement,
@@ -1074,6 +1086,11 @@ class SubscriptionService:
                         paid_until=start,
                         updated_at=now,
                         is_auto_renewing=order.is_auto_renewing
+                        and order.legal_date is not None
+                        and self._utc(
+                            order.legal_date,
+                        )
+                        == self.legal_date
                         and method.get(
                             "saved",
                         )
@@ -1113,6 +1130,14 @@ class SubscriptionService:
                 order.status = "succeeded"
                 subscription.paid_until = order.period_until
                 subscription.updated_at = now
+                if (
+                    subscription.legal_date is None
+                    or self._utc(
+                        subscription.legal_date,
+                    )
+                    != self.legal_date
+                ):
+                    subscription.is_auto_renewing = False
                 subscription.next_charge_at = order.period_until if subscription.is_auto_renewing else None
                 session.add(
                     BillingEventDB(
@@ -1617,8 +1642,14 @@ class SubscriptionService:
         product_id = str(
             current.productId or "",
         )
-        product = next(
-            (product for product in self._catalog.products if product.id == product_id),
+        product_tier = next(
+            (
+                tier
+                for tier in self._catalog.root
+                if any(
+                    (product.id == product_id for product in tier.products),
+                )
+            ),
             None,
         )
         if (
@@ -1651,14 +1682,14 @@ class SubscriptionService:
                 )
                 .with_for_update(),
             )
-            if product is None:
+            if product_tier is None:
                 if subscription is None or subscription.plan_id != product_id:
                     raise BillingPurchaseError()
                 # A retired product is no longer offered. A previously verified
                 # subscription still retains its tier for reconciliation/restoration.
                 entitlement = subscription.entitlement
             else:
-                entitlement = product.entitlement
+                entitlement = product_tier.id
             if subscription is None:
                 if original_owner != owner_id:
                     raise BillingPurchaseError()
@@ -1850,7 +1881,13 @@ class SubscriptionService:
                         BillingSubscriptionDB.is_auto_renewing.is_(
                             True,
                         ),
-                        BillingSubscriptionDB.next_charge_at <= self._now(),
+                        or_(
+                            BillingSubscriptionDB.next_charge_at <= self._now(),
+                            BillingSubscriptionDB.legal_date.is_(
+                                None,
+                            ),
+                            BillingSubscriptionDB.legal_date != self.legal_date,
+                        ),
                     )
                     .order_by(
                         BillingSubscriptionDB.next_charge_at,
@@ -1872,6 +1909,16 @@ class SubscriptionService:
                     subscription_id,
                     with_for_update=True,
                 )
+                if subscription is not None and (
+                    subscription.legal_date is None
+                    or self._utc(
+                        subscription.legal_date,
+                    )
+                    != self.legal_date
+                ):
+                    subscription.is_auto_renewing = False
+                    subscription.next_charge_at = None
+                    continue
                 if (
                     subscription is None
                     or not subscription.is_auto_renewing
@@ -1927,6 +1974,7 @@ class SubscriptionService:
                         interval_months=subscription.interval_months,
                         interval_days=subscription.interval_days,
                         renewal_payment_method_id=subscription.payment_method_id,
+                        legal_date=subscription.legal_date,
                         receipt_email=subscription.receipt_email,
                         status="created",
                         created_at=self._now(),
@@ -2074,12 +2122,38 @@ class SubscriptionService:
                     subscription.id,
                 )
 
+    async def _cancel_outdated_order(
+        self,
+        session: AsyncSession,
+        order: BillingPaymentDB,
+    ) -> bool:
+        if (
+            order.legal_date is not None
+            and self._utc(
+                order.legal_date,
+            )
+            == self.legal_date
+        ):
+            return False
+        order.status = "canceled"
+        order.is_auto_renewing = False
+        if order.subscription_id:
+            subscription = await session.get(
+                BillingSubscriptionDB,
+                order.subscription_id,
+                with_for_update=True,
+            )
+            if subscription is not None:
+                subscription.is_auto_renewing = False
+                subscription.next_charge_at = None
+        return True
+
     def _plan(
         self,
         plan_id: str,
     ) -> BillingProductConfig:
         plan = next(
-            (plan for plan in self._catalog.products if plan.id == plan_id),
+            (plan for tier in self._catalog.root for plan in tier.products if plan.id == plan_id),
             None,
         )
         if plan is None:

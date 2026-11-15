@@ -120,6 +120,7 @@ def test_parallel_checkouts_and_callbacks_grant_one_period(
                         owner,
                         "monthly",
                         LanguageCode.RU,
+                        legal_date=ctx.service.legal_date,
                     )
                     for _ in range(
                         8,
@@ -221,6 +222,7 @@ def test_parallel_checkouts_dispatch_one_invoice(
                         owner,
                         "monthly",
                         LanguageCode.RU,
+                        legal_date=ctx.service.legal_date,
                     )
                     for _ in range(
                         8,

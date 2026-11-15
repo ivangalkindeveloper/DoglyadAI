@@ -42,7 +42,7 @@ def verify_payment(project: str, plan_id: str, environment: dict[str, str], befo
     if not re.fullmatch(r'[1-9][0-9]{0,18}', ledger['invoice_id'] or ''):
         raise ValueError('Missing numeric Robokassa invoice')
     catalog = json.loads((Path(__file__).resolve().parents[2] / 'backend/main/config/development/billing.json').read_text())
-    plan = next(item for item in catalog['products'] if item['id'] == plan_id)
+    plan = next(item for tier in catalog for item in tier['products'] if item['id'] == plan_id)
     if ledger['amount_minor'] != plan['price']['amountMinor'] or ledger['currency'] != plan['price']['currencyIso2Code']:
         raise ValueError('The payment does not match the selected price')
     if outcome == 'pending':

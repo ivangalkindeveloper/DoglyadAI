@@ -138,9 +138,9 @@ class BillingPaymentDB(ApplicationBase):
             32,
         ),
     )
-    terms_version: Mapped[str | None] = mapped_column(
-        String(
-            128,
+    legal_date: Mapped[datetime | None] = mapped_column(
+        DateTime(
+            timezone=True,
         ),
     )
     consent_at: Mapped[datetime | None] = mapped_column(

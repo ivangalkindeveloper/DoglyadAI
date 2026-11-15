@@ -34,6 +34,7 @@ async def _paid(
         owner,
         "monthly",
         LanguageCode.RU,
+        legal_date=ctx.service.legal_date,
     )
     payment = ctx.payments[
         str(
@@ -249,6 +250,7 @@ def test_lost_renewal_response_survives_cancellation_and_reuses_dispatch_snapsho
                     owner,
                     "monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             await ctx.service.cancel(
                 owner,
@@ -333,6 +335,7 @@ def test_definitive_invoice_rejection_allows_a_new_order(
                     owner,
                     "monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             ctx.client._transport = original
             async with ctx.database.session() as session:
@@ -495,6 +498,7 @@ def test_uncertain_provider_error_keeps_invoice_and_never_replays_submission(
                     owner,
                     "monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             ctx.client._transport = original
             async with ctx.database.session() as session:
@@ -512,6 +516,7 @@ def test_uncertain_provider_error_keeps_invoice_and_never_replays_submission(
                     owner,
                     "monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 )
             async with ctx.database.session() as session, session.begin():
                 order = await session.get(
@@ -849,6 +854,7 @@ def test_inflight_renewal_blocks_concurrent_new_purchase(
                     owner,
                     "monthly",
                     LanguageCode.RU,
+                    legal_date=ctx.service.legal_date,
                 ),
             )
             release.set()

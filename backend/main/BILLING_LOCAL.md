@@ -121,19 +121,20 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/doglyad_dat
 
 1. Локальную PostgreSQL через `make start-local-database` либо собственный сервер
    PostgreSQL с отдельным `DATABASE_URL`.
-2. В `config/development/billing.json` уже настроены тарифы в общем списке `products`.
+2. В `config/development/billing.json` уже настроены тарифы во вложенных списках `[].products`.
    Apple использует их ID, а Робокасса — также период и рублевую `price`. При необходимости
    для отдельного локального окружения можно использовать минимальный каталог:
 
    ```json
-   {"termsVersion":"local-test-v1","tiers":[{"id":"pro","titleLocaleKey":"subscriptionPaywallProLabel",
-      "featureLocaleKeys":["subscriptionPaywallProModelsDescription"]}],
-    "products":[
-     {"id":"local-pro-monthly","period":"monthly",
-      "titleLocaleKey":"subscriptionProMonthlyLabel",
-      "priceTemplateLocaleKey":"subscriptionMonthlyPriceDescription",
-      "entitlement":"pro","price":{"amountMinor":10000,"currencyIso2Code":"RUB"}}
-   ]}
+   [{"id":"pro","titleLocaleKey":"subscriptionPaywallProLabel",
+     "featureLocaleKeys":["subscriptionPaywallProModelsDescription"],
+     "products":[
+       {"id":"local-pro-monthly","period":"monthly",
+        "titleLocaleKey":"subscriptionProMonthlyLabel",
+        "priceTemplateLocaleKey":"subscriptionMonthlyPriceDescription",
+        "price":{"amountMinor":10000,"currencyIso2Code":"RUB"}}
+     ]
+   }]
    ```
 
    Поддерживаемые периоды Робокассы: `weekly`, `monthly`, `sixMonth`, `annual`.

@@ -189,6 +189,7 @@ final class DependencyContainer: ObservableObject {
             let subscriptionBackendRepository = SubscriptionBackendRepository(
                 httpClient: httpClient,
                 securityDatabase: DSecurityDatabase(),
+                getAcceptedLegalDocumentDate: sharedRepository.getAcceptedLegalDocumentDate,
             )
             let subscriptionStoreKitRepository = SubscriptionStoreKitRepository(
                 backend: subscriptionBackendRepository,
